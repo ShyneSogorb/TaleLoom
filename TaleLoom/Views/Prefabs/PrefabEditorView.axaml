@@ -1,0 +1,127 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TaleLoom.ViewModels.Prefabs"
+             x:Class="TaleLoom.Views.Prefabs.PrefabEditorView"
+             x:DataType="vm:PrefabEditorViewModel"
+             >
+    
+    <Grid 
+        Margin="20"
+        RowDefinitions="Auto,Auto,*,Auto,Auto">
+        
+        <!-- Title -->
+        
+        <TextBlock
+            Grid.Row="0"
+            Text="Edit Prefab"
+            FontSize="28"
+            Margin="0,0,0,20" />
+
+        <!-- Prefab name -->
+        
+        <StackPanel
+            Grid.Row="1"
+            Margin="0,0,0,20">
+            
+            <TextBlock Text="Prefab Name"
+                Margin="0,0,0,5" />
+            
+            <TextBox
+                Text="{Binding Name, Mode=TwoWay}"
+                Width="300"
+                HorizontalAlignment="Left" />
+            
+        </StackPanel>
+        
+        <!-- Fields -->
+        
+        <ScrollViewer Grid.Row="2">
+            <StackPanel>
+                <TextBlock
+                    Text="Fields"
+                    FontSize="20"
+                    Margin="0,0,0,10" />
+                
+                <ItemsControl ItemsSource="{Binding Fields}">
+                
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate
+                            x:DataType="vm:FieldDefinitionViewModel">
+                            
+                            <Grid
+                                ColumnDefinitions="Auto,*,150,Auto,Auto"
+                                Margin="0,0,0,8">
+                                
+                                <!-- Delete -->
+                                
+                                <CheckBox
+                                    Grid.Column="0"
+                                    IsChecked="{Binding IsActive, Mode=TwoWay}"
+                                    Content="Active"
+                                    Margin="0,0,5,0"
+                                    />
+                                
+                                <!-- Name -->
+                                
+                                <TextBox 
+                                    Grid.Column="1"
+                                    Text="{Binding Name, Mode=TwoWay}"
+                                    IsEnabled="{Binding IsActive}"
+                                    Margin="0,0,10,0" />
+                                
+                                <!-- Type -->
+                                
+                                <ComboBox
+                                    Grid.Column="2"
+                                    ItemsSource="{Binding AvailableTypes}"
+                                    SelectedItem="{Binding Type}"
+                                    Margin="0,0,10,0" />
+                                
+                                <!-- Move Up -->
+                                
+                                <Button
+                                    Grid.Column="3"
+                                    Content="↑"
+                                    Margin="0,0,5,0"
+                                    Command="{Binding $parent[UserControl].DataContext.MoveFieldUpCommand}"
+                                    CommandParameter="{Binding}" />
+                                
+                                <!-- Move Down -->
+                                
+                                <Button
+                                    Grid.Column="4"
+                                    Content="↓"
+                                    Margin="0,0,5,0"
+                                    Command="{Binding $parent[UserControl].DataContext.MoveFieldDownCommand}"
+                                    CommandParameter="{Binding}" />
+                                
+                                
+                            </Grid>
+                            
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    
+                </ItemsControl>
+                
+            </StackPanel>
+        </ScrollViewer>
+        
+        <!-- Add field -->
+        
+        <Button
+            Grid.Row="3"
+            Content="Add Field"
+            HorizontalAlignment="Left"
+            Margin="0,20,0,0"
+            Command="{Binding AddFieldCommand}" />
+        
+        <Button
+            Grid.Row="4"
+            Content="Save"
+            HorizontalAlignment="Left"
+            Margin="0,20,0,0"
+            Command="{Binding SavePrefabCommand}" />
+        
+    </Grid>
+    
+</UserControl>

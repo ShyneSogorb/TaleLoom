@@ -1,0 +1,38 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TaleLoom.ViewModels.Prefabs.Shell"
+             x:Class="TaleLoom.Views.Shell.AppShellView"
+             x:DataType="vm:AppShellViewModel"
+             >
+    
+    <Grid
+        ColumnDefinitions="200,*">
+        
+        <!-- Navigation -->
+        
+        <StackPanel
+            Grid.Column="0"
+            Margin="20"
+            Spacing="10">
+            
+            <TextBlock
+                Text="TaleLoom"
+                FontSize="28" />
+            
+            <Button Content="Home" Command="{Binding  NavigateHomeCommand}"/>
+            <Button Content="Prefabs" Command="{Binding NavigatePrefabsCommand}"/>
+            <Button Content="Entities" />
+            
+        </StackPanel>
+        
+        <!-- Current control -->
+        
+        <ContentControl
+            Grid.Column="1"
+            Content="{Binding Navigation.CurrentView}" />
+        
+        
+        
+    </Grid>
+    
+</UserControl>

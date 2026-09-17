@@ -1,0 +1,31 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:homeVm="using:TaleLoom.ViewModels.Prefabs.Home"
+             xmlns:homeViews="using:TaleLoom.Views.Home"
+             xmlns:prefabVm="using:TaleLoom.ViewModels.Prefabs.Prefabs"
+             xmlns:prefabViews="using:TaleLoom.Views.Prefabs"
+             xmlns:prefabs="clr-namespace:TaleLoom.ViewModels.Prefabs"
+             x:Class="TaleLoom.App"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        
+        <DataTemplate DataType="{x:Type homeVm:HomeViewModel}">
+            <homeViews:HomeView />
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type prefabVm:PrefabListViewModel}">
+            <prefabViews:PrefabListView />
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type prefabs:PrefabEditorViewModel}">
+            <prefabViews:PrefabEditorView />
+        </DataTemplate>
+        
+    </Application.DataTemplates>
+             
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+</Application>

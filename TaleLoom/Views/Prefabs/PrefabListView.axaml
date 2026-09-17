@@ -1,0 +1,66 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TaleLoom.ViewModels.Prefabs.Prefabs"
+             x:Class="TaleLoom.Views.Prefabs.PrefabListView"
+             x:DataType="vm:PrefabListViewModel">
+
+    <Grid
+        Margin="20"
+        RowDefinitions="Auto,*,Auto">
+        
+        <!-- Current location -->
+        
+        <TextBlock Grid.Row="0"
+                   Text="Manage Prefabs"
+                   FontSize="28"
+                   Margin="0,0,0,20" />
+        
+        <!-- Prefab list -->
+        
+        <ScrollViewer
+            Grid.Row="1">
+            
+            <ItemsControl
+                ItemsSource="{Binding Prefabs}">
+                
+                <ItemsControl.ItemTemplate>
+                    
+                    <DataTemplate x:DataType="vm:PrefabListItemViewModel">
+                    
+                        <Grid
+                            ColumnDefinitions="*,Auto"
+                            Margin="0,0,0,8">
+                            
+                            <TextBlock Grid.Column="0"
+                                       Text="{Binding Name}"
+                                       FontSize="18"
+                                       VerticalAlignment="Center" />
+                            
+                            <Button Grid.Column="1"
+                                    Content="Edit"
+                                    Margin="10,0,0,0"
+                                    Command="{Binding $parent[UserControl].DataContext.EditPrefabCommand}"
+                                    CommandParameter="{Binding}"/>
+                            
+                        </Grid>
+                    </DataTemplate>
+                    
+                </ItemsControl.ItemTemplate>
+                
+            </ItemsControl>
+            
+        </ScrollViewer>
+        
+        <!-- Create -->
+        
+        <Button
+            Grid.Row="2"
+            Content="Create New Prefab"
+            HorizontalAlignment="Right"
+            Margin="0,20,0,0" 
+            Command="{Binding CreatePrefabCommand}" />
+        
+    </Grid>
+    
+    
+</UserControl>
