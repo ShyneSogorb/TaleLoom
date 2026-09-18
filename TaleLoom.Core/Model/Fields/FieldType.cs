@@ -1,4 +1,5 @@
-﻿namespace TaleLoom.Core.Model.Fields;
+﻿using TaleLoom.Core.Model.Fields;
+namespace TaleLoom.Core.Model.Fields;
 
 public enum FieldType
 {
@@ -10,3 +11,7 @@ public enum FieldType
     Url = 5,
     Reference = 6
 };
+
+namespace MyNamespace
+{
+}

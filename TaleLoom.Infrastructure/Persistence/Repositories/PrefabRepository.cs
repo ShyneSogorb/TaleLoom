@@ -74,6 +74,20 @@ public sealed class PrefabRepository
         return reader.GetBoolean(0);
     }
     
+    public bool ExistsField(string name)
+    {
+        using var connection = _database.CreateConnection();
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT COUNT(1) FROM field_definition WHERE name = @name";
+        command.Parameters.AddWithValue("@name", name);
+
+        var reader = command.ExecuteReader();
+        reader.Read();
+        return reader.GetBoolean(0);
+    }
+    
     
     private static void UpdatePrefab(Prefab prefab, SqliteConnection con, SqliteTransaction trans)
     {

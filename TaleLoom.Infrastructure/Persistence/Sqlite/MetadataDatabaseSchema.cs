@@ -47,7 +47,7 @@ public static class DatabaseSchemaConstructor
         return nullability.ReadState == NullabilityState.Nullable;
     }
     
-    public static void CreateTable<T>(ref SqliteCommand command)
+    public static void CreateTable<T>(SqliteCommand command)
     {
         Type type = typeof(T);
         var properties = type.GetProperties()

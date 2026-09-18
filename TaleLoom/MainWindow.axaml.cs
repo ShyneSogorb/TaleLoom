@@ -18,11 +18,19 @@ public partial class MainWindow : Window
         var navigationService = new NavigationService();
         navigationService.Navigate(new HomeViewModel());
 
-        var database = new SqliteDatabase("TaleLoom.metadata.db");
-        var repo = new PrefabRepository(database);
-        var initializer = new DatabaseInitializer(database);
-        initializer.Initialize();
-        DataContext = new AppShellViewModel(navigationService, repo);
+        var prefabDatabase = new SqliteDatabase("TaleLoom.metadata.db");
+        var prefabRepository = new PrefabRepository(prefabDatabase);
+        var prefabInitializer = new PrefabDatabaseInitializer(prefabDatabase);
+        prefabInitializer.Initialize();
+        prefabInitializer.Populate();
+        
+        var entityDatabase = new SqliteDatabase("TaleLoom.db");
+        var entityRepository = new EntityRepository(entityDatabase);
+        var entityInitializer = new EntityDatabaseInitializer(entityDatabase);
+        //entityInitializer.Initialize();
+        
+        
+        DataContext = new AppShellViewModel(navigationService, prefabRepository, entityRepository);
 
     }
 }
