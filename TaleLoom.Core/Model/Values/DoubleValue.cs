@@ -4,21 +4,40 @@ using TaleLoom.Core.Model.Fields;
 
 namespace TaleLoom.Core.Model.Values;
 
-public sealed class NameValue : ValueBase
+public sealed class DoubleValue : ValueBase
 {
-    public override FieldType Type => FieldType.Name;
-    public override bool IsValid => Data != null;
-    
-    public string? Value
+    public double? Value
     {
-        get => (string?)Data;
+        get => (double?)Data;
         set => Data = value;
     }
+
+    public override FieldType Type => FieldType.Float;
+    public override bool IsValid => Value != null;
+
     protected override object? ParseData(object? value)
     {
         return value is null ? null : Convert.ToString(value);
     }
-    public NameValue(object? value = null) : base(value) { }
+
+    public DoubleValue(double? data)
+    {
+        Data = data;
+    }
+    
+    public DoubleValue(object? value = null)
+    {
+        Value = value switch
+        {
+            null => null,
+            double dec => dec,
+            string str when DecimalRegex.IsMatch(str) => double.Parse(str),
+            string str when IntegerRegex.IsMatch(str) => (double)int.Parse(str),
+            _ => null
+        };
+    }
+    
+    
     public override bool CanConvertTo<T>()
     {
         if(Data == null)
@@ -28,7 +47,8 @@ public sealed class NameValue : ValueBase
 
         try
         {
-            Convert.ChangeType(Data, typeof(T));
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Convert.ChangeType(Value, typeof(T));
             return true;
         }
         catch (Exception e)
@@ -40,19 +60,20 @@ public sealed class NameValue : ValueBase
     protected override T GetImpl<T>()
     {
         Debug.Assert(Data != null, nameof(Data) + " != null");
-        if (Data is T result)
+        if (Value is T result)
         {
             return result;
         }
 
         try
         {
-            return (T)Convert.ChangeType(Data, typeof(T));
+            return (T)Convert.ChangeType(Value, typeof(T));
         }
         catch (Exception e)
         {
             throw new InvalidOperationException($"Cannot convert value of type {Type} to {typeof(T)}", e);
         }
     }
+    
 }
     

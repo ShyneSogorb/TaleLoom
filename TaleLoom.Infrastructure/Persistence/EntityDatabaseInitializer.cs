@@ -1,4 +1,6 @@
-﻿using TaleLoom.Core.Model.Fields;
+﻿using System.Text.RegularExpressions;
+using TaleLoom.Core.Model.Entities;
+using TaleLoom.Core.Model.Fields;
 using TaleLoom.Core.Model.Prefabs;
 
 namespace TaleLoom.Infrastructure.Persistence;
@@ -36,15 +38,57 @@ public sealed class EntityDatabaseInitializer
 
         var command = connection.CreateCommand();
 
-        command.CommandText =
-            $"""
-            CREATE TABLE IF NOT EXIST '{prefab.ID}'
-            """;
+        List<String> instructions = new List<string>();
+        instructions.AddRange(new string[]{
+            "id TEXT PRIMARY KEY",
+            "name TEXT NOT NULL"
+        });
+        instructions.AddRange(
+            prefab.Fields
+            .Select(f => $"'{f.Id.ToString()}' {ToSqlType(f.Type)}")
+            .ToList()
+        );
+        
 
-        List<String> instructions = prefab.Fields
-            .Select(f => $"'{}'");
-
+        command.CommandText = $"CREATE TABLE IF NOT EXISTS '{prefab.ID}' ( {string.Join(",\n", instructions)} )";
+        
         command.ExecuteNonQuery();
         
     }
+
+    private static Regex SpaceRemove = new Regex(@"\s");
+    public string ToSqlName(string name)
+    {
+        return SpaceRemove.Replace(name, "_");
+    }
+
+    public void Populate(Entity entity)
+    {
+        using var connection = _database.CreateConnection();
+        
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        
+        command.CommandText +=
+            $"""
+             INSERT OR IGNORE INTO '{entity.Parent.ID.ToString()}' ( id, name, {string.Join(",\n", entity.Parent.Fields.Select(f => $"'{f.Id.ToString()}'"))} )
+             VALUES ( @id, @name, {string.Join(",\n", entity.Fields.Select(f => '@' + ToSqlName(f.Name)))});
+             """;
+
+        foreach (var field in entity.Fields)
+        {
+            var param = command.CreateParameter();
+            param.ParameterName = '@' + ToSqlName(field.Name);
+            param.Value = entity[field]?.GetData() ?? DBNull.Value;
+            param.IsNullable = true;
+            command.Parameters.Add(param);
+        }
+        command.Parameters.AddWithValue("@id", entity.Id.ToString());
+        command.Parameters.AddWithValue("@name", entity.Name);
+                
+        command.ExecuteNonQuery();
+
+    }
+    
 }

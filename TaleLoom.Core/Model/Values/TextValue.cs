@@ -4,13 +4,19 @@ using TaleLoom.Core.Model.Fields;
 
 namespace TaleLoom.Core.Model.Values;
 
-public sealed class TextValue(string? data) : Value
+public sealed class TextValue(string? data) : ValueBase
 {
     private readonly string? _data = data;
 
     public override FieldType Type => FieldType.Text;
     public override bool IsValid => _data != null;
-    
+
+    protected override object? ParseData(object? value)
+    {
+        throw new NotImplementedException();
+    }
+    //public TextValue(object? value = null) : base(value) { }
+
     public override bool CanConvertTo<T>()
     {
         if(_data == null)

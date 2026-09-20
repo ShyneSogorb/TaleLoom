@@ -4,17 +4,17 @@ using TaleLoom.Core.Model.Fields;
 namespace TaleLoom.Core.Model.Values;
 public static class ValueFactory
 {
-    private static readonly Dictionary<FieldType, Func<object?, Value>> _factories = new()
+    private static readonly Dictionary<FieldType, Func<object?, ValueBase>> _factories = new()
     {
-        [FieldType.Integer] = value => new IntegerValue((int?)value),
-        [FieldType.Float]   = value => new FloatValue((float?)value),
-        [FieldType.Name]    = value => new NameValue((string?)value),
-        [FieldType.Text]    = value => new TextValue((string?)value),
-        [FieldType.Image]   = value => new ImageValue((string?)value),
-        [FieldType.Url]     = value => new UrlValue((string?)value),
+        [FieldType.Integer] = value => new IntegerValue(value),
+        [FieldType.Float]   = value => new DoubleValue(value),
+        [FieldType.Name]    = value => new NameValue(value),
+        //[FieldType.Text]    = value => new TextValue(value),
+        //[FieldType.Image]   = value => new ImageValue(value),
+        //[FieldType.Url]     = value => new UrlValue(value),
     };
 
-    public static Value Create(FieldType type, object? value)
+    public static ValueBase Create(FieldType type, object? value)
     {
         if (!_factories.TryGetValue(type, out var factory))
         {

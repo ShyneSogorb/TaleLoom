@@ -1,0 +1,21 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TaleLoom.ViewModels.Entities"
+             x:Class="TaleLoom.Views.Entities.Fields.IntegerFieldEditor"
+             x:DataType="vm:EntityFieldEditorViewModel"
+             >
+    
+    <StackPanel Spacing="4">
+        
+        <TextBlock Text="{Binding Field.Name}" />
+        
+        <NumericUpDown
+            Value="{Binding ValueAsDouble, Mode=TwoWay}"
+            FormatString="N0"
+            Increment="1"
+            ParsingNumberStyle="Integer"
+            />
+        
+    </StackPanel>
+    
+</UserControl>

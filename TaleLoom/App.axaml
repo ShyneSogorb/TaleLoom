@@ -1,10 +1,12 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:homeVm="using:TaleLoom.ViewModels.Prefabs.Home"
+             xmlns:homeVm="using:TaleLoom.ViewModels.Home"
              xmlns:homeViews="using:TaleLoom.Views.Home"
-             xmlns:prefabVm="using:TaleLoom.ViewModels.Prefabs.Prefabs"
+             xmlns:prefabVm="using:TaleLoom.ViewModels.Prefabs"
              xmlns:prefabViews="using:TaleLoom.Views.Prefabs"
-             xmlns:prefabs="clr-namespace:TaleLoom.ViewModels.Prefabs"
+             xmlns:entityVm="using:TaleLoom.ViewModels.Entities"
+             xmlns:entityViews="using:TaleLoom.Views.Entities"
+             xmlns:entityFields="using:TaleLoom.Views.Entities.Fields"
              x:Class="TaleLoom.App"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
@@ -19,11 +21,42 @@
             <prefabViews:PrefabListView />
         </DataTemplate>
         
-        <DataTemplate DataType="{x:Type prefabs:PrefabEditorViewModel}">
+        <DataTemplate DataType="{x:Type prefabVm:PrefabEditorViewModel}">
             <prefabViews:PrefabEditorView />
         </DataTemplate>
         
+        <DataTemplate DataType="{x:Type entityVm:EntitiesListViewModel}">
+            <entityViews:EntitiesListView />
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type entityVm:EntityEditorViewModel}">
+            <entityViews:EntityEditorView />
+        </DataTemplate>
+        
     </Application.DataTemplates>
+             
+    <Application.Resources>
+        <DataTemplate x:Key="IntegerFieldTemplate">
+            <entityFields:IntegerFieldEditor />
+        </DataTemplate>
+        
+        <DataTemplate x:Key="FloatFieldTemplate">
+            <entityFields:FloatFieldEditor />
+        </DataTemplate>
+        
+        <DataTemplate x:Key="NameFieldTemplate">
+            <entityFields:NameFieldEditor />
+        </DataTemplate>
+        
+        <entityVm:EntityFieldTemplateSelector
+            x:Key="EntityFieldTemplateSelector"
+            IntegerTemplate="{StaticResource IntegerFieldTemplate}"
+            FloatTemplate="{StaticResource FloatFieldTemplate}"
+            NameTemplate="{StaticResource NameFieldTemplate}"
+            />
+        
+        
+    </Application.Resources>
              
     <Application.Styles>
         <FluentTheme />

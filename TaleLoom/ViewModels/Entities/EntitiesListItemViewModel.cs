@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using TaleLoom.Core.Model.Common;
-using TaleLoom.Infrastructure.Persistence;
-using TaleLoom.Services;
-using TaleLoom.ViewModels.Prefabs.Prefabs;
+﻿using TaleLoom.Core.Model.Common;
 
-namespace TaleLoom.ViewModels.Prefabs.Entities;
+namespace TaleLoom.ViewModels.Entities;
 
 public class EntitiesListItemViewModel
 {
     public EntityId ID { get; }
+    public PrefabID ParentID { get; }
     public string Name { get; }
 
     
-    public EntitiesListItemViewModel(EntityId id, string name)
+    public EntitiesListItemViewModel(EntityId id, string name, PrefabID parentId)
     {
         ID = id;
         Name = name;
+        ParentID = parentId;
     }
 }

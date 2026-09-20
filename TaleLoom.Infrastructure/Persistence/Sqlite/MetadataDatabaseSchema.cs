@@ -9,15 +9,11 @@ namespace TaleLoom.Infrastructure.Persistence;
 public static class DatabaseSchemaConstructor
 {
     
-    public static string ToSqlName(string name)
-    {
-        return Regex.Replace(name, "([a-z])([A-Z])", "$1_$2")
-            .ToLower();
-    }
+
     
     public static string PropertyName(PropertyInfo propertyInfo)
     {
-        return ToSqlName(propertyInfo.GetCustomAttribute<CustomNameAttribute>()?.Name ?? propertyInfo.Name);
+        return SQLUtils.ToSqlName(propertyInfo.GetCustomAttribute<CustomNameAttribute>()?.Name ?? propertyInfo.Name);
     }
     
     public static PropertyInfo PkForReference(PropertyInfo Refence)
@@ -77,7 +73,7 @@ public static class DatabaseSchemaConstructor
             
             PropertyInfo refenceId = PkForReference(property);
             
-            instructions.Add($"FOREIGN KEY ({PropertyName(property)}) REFERENCES {ToSqlName(property.PropertyType.Name)}({PropertyName(refenceId)})");
+            instructions.Add($"FOREIGN KEY ({PropertyName(property)}) REFERENCES {SQLUtils.ToSqlName(property.PropertyType.Name)}({PropertyName(refenceId)})");
         }
         
         foreach (var property in properties.Where(p=>p.GetCustomAttribute<UniqueAttribute>() != null) )
@@ -93,19 +89,19 @@ public static class DatabaseSchemaConstructor
 
             if (uq.Combination.Any(
                     c => properties.FirstOrDefault(
-                       t => ToSqlName(PropertyName(t)) == ToSqlName(c)) == null
+                       t => SQLUtils.ToSqlName(PropertyName(t)) == SQLUtils.ToSqlName(c)) == null
                 ))
             {
                 throw new Exception($"Variable {property.Name} of class {type.Name} has combined unique with properties which do not exists");
             }
             
-            var combination = uq.Combination.Select(name => PropertyName(properties.First(p => PropertyName(p) == ToSqlName(name)))).ToList();
+            var combination = uq.Combination.Select(name => PropertyName(properties.First(p => PropertyName(p) == SQLUtils.ToSqlName(name)))).ToList();
             combination.Add(PropertyName(property));
             
             instructions.Add($"UNIQUE ({string.Join(", ", combination)})");
         }
 
-        command.CommandText += $"CREATE TABLE IF NOT EXISTS {ToSqlName(type.Name)} (\n" + string.Join(",\n\t", instructions) + "\n);\n";
+        command.CommandText += $"CREATE TABLE IF NOT EXISTS {SQLUtils.ToSqlName(type.Name)} (\n" + string.Join(",\n\t", instructions) + "\n);\n";
     }
 
     public static void InsertToTable<T>(ref SqliteCommand command, T instance)
@@ -117,7 +113,7 @@ public static class DatabaseSchemaConstructor
 
         command.CommandText +=
             $"""
-             INSERT INTO {ToSqlName(type.Name)} ( {string.Join(',', properties.Select(PropertyName))} )
+             INSERT INTO {SQLUtils.ToSqlName(type.Name)} ( {string.Join(',', properties.Select(PropertyName))} )
              VALUES ({string.Join(',', properties.Select(p => '@' + PropertyName(p)))});\n\n
              """;
 

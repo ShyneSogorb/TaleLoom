@@ -60,6 +60,35 @@ public sealed class PrefabRepository
         return reader.GetBoolean(0);
     }
     
+    public bool ExistsPrefab(string name)
+    {
+        using var connection = _database.CreateConnection();
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT COUNT(1) FROM prefab WHERE name = @name";
+        command.Parameters.AddWithValue("@name", name);
+
+        var reader = command.ExecuteReader();
+        reader.Read();
+        return reader.GetBoolean(0);
+    }
+    
+    public PrefabID PrefabIdFromName(string name)
+    {
+        using var connection = _database.CreateConnection();
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT id FROM prefab WHERE name = @name";
+        command.Parameters.AddWithValue("@name", name);
+
+        var reader = command.ExecuteReader();
+        reader.Read();
+        return new PrefabID(Guid.Parse(reader.GetString(0)));
+    }
+
+    
     public bool ExistsField(FieldDefinition field)
     {
         using var connection = _database.CreateConnection();
@@ -73,21 +102,6 @@ public sealed class PrefabRepository
         reader.Read();
         return reader.GetBoolean(0);
     }
-    
-    public bool ExistsField(string name)
-    {
-        using var connection = _database.CreateConnection();
-        connection.Open();
-
-        var command = connection.CreateCommand();
-        command.CommandText = "SELECT COUNT(1) FROM field_definition WHERE name = @name";
-        command.Parameters.AddWithValue("@name", name);
-
-        var reader = command.ExecuteReader();
-        reader.Read();
-        return reader.GetBoolean(0);
-    }
-    
     
     private static void UpdatePrefab(Prefab prefab, SqliteConnection con, SqliteTransaction trans)
     {
@@ -114,7 +128,7 @@ public sealed class PrefabRepository
             {
                 field.SetOrder(-field.Position);
                 Action<Prefab, FieldDefinition, SqliteConnection, SqliteTransaction> execute =
-                    ExistsField(field) ? UpdateField : InsertField;
+                    ExistsField(field) || i == 0 ? UpdateField : InsertField;
 
                 execute(prefab, field, con, trans);
             }
@@ -172,8 +186,8 @@ public sealed class PrefabRepository
         command.Transaction = trans;
         command.CommandText =
             """
-            INSERT INTO field_definition( id, prefab_id, name, position, type, is_required, is_active )
-            VALUES ( @id, @prefab_id, @name, @position, @type, @is_required, @is_active )
+            INSERT INTO field_definition( id, prefab_id, name, position, type, is_required, is_active, default_value )
+            VALUES ( @id, @prefab_id, @name, @position, @type, @is_required, @is_active, @default_value )
             """;
         command.Parameters.AddWithValue("@id", field.Id.ToString());
         command.Parameters.AddWithValue("@prefab_id", prefab.ID.ToString());
@@ -182,6 +196,12 @@ public sealed class PrefabRepository
         command.Parameters.AddWithValue("@type", field.Type);
         command.Parameters.AddWithValue("@is_required", field.IsRequired ? 1 : 0);
         command.Parameters.AddWithValue("@is_active", field.IsActive ? 1 : 0);
+
+        var defaultValue = command.CreateParameter();
+        defaultValue.ParameterName = "@default_value";
+        defaultValue.Value = (object?)field.DefaultValue ?? DBNull.Value;
+        defaultValue.IsNullable = true;
+        command.Parameters.Add(defaultValue);
         
         command.ExecuteNonQuery();
     }
@@ -275,4 +295,30 @@ public sealed class PrefabRepository
         return prefab;
     }
     
+    
+    public Prefab GetPrefabByName(string name, bool getFields = true)
+    {
+        using var connection = _database.CreateConnection();
+        connection.Open();
+
+        var command = connection.CreateCommand();
+
+        command.CommandText = "SELECT id FROM prefab WHERE name = @name";
+        command.Parameters.AddWithValue("@name", name);
+        
+        var reader = command.ExecuteReader();
+
+        reader.Read();
+        PrefabID id = new PrefabID(Guid.Parse(reader.GetString(0)));
+            
+        var prefab = Prefab.Load(id, name);
+
+        if (getFields)
+        {
+            LoadPrefabFields(prefab);
+        }        
+        
+        return prefab;
+    }
+
 }

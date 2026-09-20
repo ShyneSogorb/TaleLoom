@@ -1,12 +1,11 @@
 ﻿using System.Windows.Input;
 using TaleLoom.Infrastructure.Persistence;
 using TaleLoom.Services;
-using TaleLoom.ViewModels.Prefabs.Entities;
-using TaleLoom.ViewModels.Prefabs.Home;
-using TaleLoom.ViewModels.Prefabs.Prefabs;
-using TaleLoom.Views.Home;
+using TaleLoom.ViewModels.Entities;
+using TaleLoom.ViewModels.Home;
+using TaleLoom.ViewModels.Prefabs;
 
-namespace TaleLoom.ViewModels.Prefabs.Shell;
+namespace TaleLoom.ViewModels.Shell;
 
 public class AppShellViewModel : ViewModelBase
 {

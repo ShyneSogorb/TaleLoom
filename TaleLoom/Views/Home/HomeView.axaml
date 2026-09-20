@@ -1,6 +1,6 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:TaleLoom.ViewModels.Prefabs.Home"
+             xmlns:vm="using:TaleLoom.ViewModels.Home"
              x:Class="TaleLoom.Views.Home.HomeView"
              x:DataType="vm:HomeViewModel">
     

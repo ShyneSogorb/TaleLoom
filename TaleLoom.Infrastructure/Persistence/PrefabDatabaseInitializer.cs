@@ -1,5 +1,6 @@
 ﻿using TaleLoom.Core.Model.Fields;
 using TaleLoom.Core.Model.Prefabs;
+using TaleLoom.Core.Model.Values;
 
 namespace TaleLoom.Infrastructure.Persistence;
 
@@ -27,7 +28,7 @@ public sealed class PrefabDatabaseInitializer
         
     }
     
-    public void Populate()
+    public List<Prefab> Populate()
     {
         PrefabRepository repo = new PrefabRepository(_database);
 
@@ -36,17 +37,25 @@ public sealed class PrefabDatabaseInitializer
         var prefab = Prefab.CreateOrGetPrefab("Character");
         prefabs.Add(prefab);
 
-        prefab.AddField("Name", FieldType.Name);
-        prefab.AddField("Age", FieldType.Integer);
-        prefab.AddField("Height", FieldType.Float);
+        prefab.AddField("Surname", FieldType.Name, true, true, new NameValue("Ythia"));
+        prefab.AddField("Age", FieldType.Integer, true, true, new IntegerValue(28));
+        prefab.AddField("Height", FieldType.Float, true, true, new DoubleValue(1.7));
 
-        foreach (var p in prefabs)
+        for (int i = 0; i < prefabs.Count; i++)
         {
-            if (!repo.ExistsField(p.Name))
+            var p = prefabs[i];
+            bool exists = repo.ExistsPrefab(p.Name);
+            if (!exists)
             {
                 repo.Save(p);
             }
+            else
+            {
+                prefabs[i] = repo.GetPrefabByName(p.Name);
+            }
         }
+
+        return prefabs;
 
     }
 }

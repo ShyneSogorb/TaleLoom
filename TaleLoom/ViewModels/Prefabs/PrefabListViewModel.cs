@@ -8,7 +8,7 @@ using TaleLoom.Core.Model.Prefabs;
 using TaleLoom.Infrastructure.Persistence;
 using TaleLoom.Services;
 
-namespace TaleLoom.ViewModels.Prefabs.Prefabs;
+namespace TaleLoom.ViewModels.Prefabs;
 
 public class PrefabListViewModel : ViewModelBase
 {

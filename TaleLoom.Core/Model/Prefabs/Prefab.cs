@@ -21,9 +21,9 @@ public sealed class Prefab
     //     return result;
     // }
 
-    private readonly List<FieldDefinition> _fields = [];
+    private List<FieldDefinition> _fields = [];
 
-    [PrimaryKey] public PrefabID ID { get; }
+    [PrimaryKey] public PrefabID ID { get; private set; }
 
     [Unique] public string Name { get; private set; }
 
@@ -53,6 +53,7 @@ public sealed class Prefab
     {
         var newField = FieldDefinition.Load(id, this, name, position, type, isRequired, isActive, defaultValue);
         AddField(newField);
+        _fields = _fields.OrderBy(f => f.Position).ToList();
         return newField;
     }
 
@@ -64,6 +65,11 @@ public sealed class Prefab
     public static Prefab CreateTransientPrefab(string name)
     {
         return new Prefab(name, true);
+    }
+
+    public void FixId(PrefabID id)
+    {
+        ID = id;
     }
     
     public static Prefab CreateOrGetPrefab(string name)
@@ -83,18 +89,22 @@ public sealed class Prefab
     
     public void AddField(FieldDefinition field)
     {
+        //field.SetOrder(_fields.Count+1);
         _fields.Add(field);
     }
     
-    public FieldId AddField(string name, FieldType type, bool isRequired, bool isActive, Value defaultValue)
+    public FieldId AddField(string name, FieldType type, bool isRequired, bool isActive, ValueBase defaultValueBase)
     {
         
-        var newElement = new FieldDefinition(this, name, _fields.Count, type, isRequired, isActive, defaultValue.IsValid ? defaultValue.Get<string>() : null);
+        var newElement = new FieldDefinition(this, name, _fields.Count+1, type, isRequired, isActive, 
+            defaultValueBase.IsValid ? defaultValueBase.Get<string>() : null);
+        
         _fields.Add(newElement);
         return newElement.Id;
     }
 
-    public FieldId AddField(string name, FieldType type, bool isRequired = true, bool isActive = true)
+    public FieldId AddField(string name, FieldType type, bool isRequired = true,
+        bool isActive = true)
     {
         return AddField(name, type, isRequired, isActive, ValueFactory.Create(type, null));
     }

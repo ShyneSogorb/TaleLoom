@@ -1,0 +1,37 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TaleLoom.ViewModels.Entities"
+             x:Class="TaleLoom.Views.Entities.EntityEditorView"
+             x:DataType="vm:EntityEditorViewModel">
+    
+    <Grid RowDefinitions="Auto, Auto, *, Auto, Auto">
+        
+        <!-- Current location -->
+        
+        <TextBlock Grid.Row="0" Text="Manage Entity" />
+        
+        <!-- Entity name -->
+        
+        <TextBox Grid.Row="1" Text="{Binding Name, Mode=TwoWay}" />
+        
+        <!-- Prefab fields -->
+        
+        <ItemsControl 
+            Grid.Row="2" 
+            ItemsSource="{Binding Fields}" 
+            ItemTemplate="{StaticResource EntityFieldTemplateSelector}">
+
+        </ItemsControl>
+        
+        <!-- Save -->
+        
+        <Button 
+            Grid.Row="3"
+            Command="{Binding SaveEntityCommand}"
+            Content="Save entity"></Button>
+        
+        <!-- Delete -->
+        
+    </Grid>
+    
+</UserControl>

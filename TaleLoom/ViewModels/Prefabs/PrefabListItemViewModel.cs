@@ -1,7 +1,7 @@
 ﻿using TaleLoom.Core.Model.Common;
 using TaleLoom.Core.Model.Prefabs;
 
-namespace TaleLoom.ViewModels.Prefabs.Prefabs;
+namespace TaleLoom.ViewModels.Prefabs;
 
 public class PrefabListItemViewModel
 {

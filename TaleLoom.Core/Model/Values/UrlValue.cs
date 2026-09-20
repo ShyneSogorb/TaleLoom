@@ -4,11 +4,18 @@ using TaleLoom.Core.Model.Fields;
 
 namespace TaleLoom.Core.Model.Values;
 
-public sealed class UrlValue(string? _data) : Value
+public sealed class UrlValue(string? _data) : ValueBase
 {
     public override FieldType Type => FieldType.Url;
     public override bool IsValid => _data != null;
+
+    protected override object? ParseData(object? value)
+    {
+        throw new NotImplementedException();
+    }
     
+    //public UrlValue(object? value = null) : base(value) { }
+
     public override bool CanConvertTo<T>()
     {
         if(_data == null)

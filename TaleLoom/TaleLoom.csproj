@@ -21,4 +21,5 @@
       <ProjectReference Include="..\TaleLoom.Core\TaleLoom.Core.csproj" />
       <ProjectReference Include="..\TaleLoom.Infrastructure\TaleLoom.Infrastructure.csproj" />
     </ItemGroup>
+
 </Project>

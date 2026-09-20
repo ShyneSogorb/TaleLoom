@@ -1,4 +1,5 @@
 ﻿
+using System.Diagnostics;
 using TaleLoom.Core.Model.Common;
 using TaleLoom.Core.Model.Prefabs;
 
@@ -37,6 +38,7 @@ public sealed class FieldDefinition
         Owner = owner;
         
         Name = name;
+        Debug.Assert(position>0);
         Position = position;
         Type = type;
         IsRequired = isRequired;
@@ -56,6 +58,7 @@ public sealed class FieldDefinition
 
     public void SetOrder(int order)
     {
+        Debug.Assert(order!=0);
         Position = order;
     }
     

@@ -4,12 +4,17 @@ using TaleLoom.Core.Model.Fields;
 
 namespace TaleLoom.Core.Model.Values;
 
-public sealed class ImageValue(string? _data) : Value
+public sealed class ImageValue(string? _data) : ValueBase
 {
 
     public override FieldType Type => FieldType.Image;
     public override bool IsValid => _data != null;
-    
+
+    protected override object? ParseData(object? value)
+    {
+        throw new NotImplementedException();
+    }
+
     public override bool CanConvertTo<T>()
     {
         if(_data == null)
@@ -27,6 +32,8 @@ public sealed class ImageValue(string? _data) : Value
             return false;
         }
     }
+    
+    //public ImageValue(object? value = null) : base(value) { }
 
     protected override T GetImpl<T>()
     {

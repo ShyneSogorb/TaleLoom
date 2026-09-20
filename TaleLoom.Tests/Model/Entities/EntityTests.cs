@@ -228,6 +228,6 @@ public class EntityTests
 
     private static Entity CreateEntity(Prefab prefab)
     {
-        return new Entity(prefab);
+        return new Entity(prefab, "foo");
     }
 }

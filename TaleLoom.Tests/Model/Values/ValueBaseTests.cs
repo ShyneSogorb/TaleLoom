@@ -6,7 +6,7 @@ using TaleLoom.Core.Model.Values;
 
 namespace TaleLoom.Tests.Model.Values;
 
-public class ValueTests
+public class ValueBaseTests
 {
     [Fact]
     public void FromInt_ShouldCreateIntValue()
@@ -14,16 +14,16 @@ public class ValueTests
         var value = new IntegerValue(42);
 
         Assert.Equal(FieldType.Integer, value.Type);
-        Assert.Equal(42, value.Data);
+        Assert.Equal(42, value.Value);
     }
 
     [Fact]
     public void FromFloat_ShouldCreateFloatValue()
     {
-        var value = new FloatValue(3.14f);
+        var value = new DoubleValue(3.14f);
 
         Assert.Equal(FieldType.Float, value.Type);
-        Assert.Equal(3.14f, value.Data);
+        Assert.Equal(3.14f, value.Value);
     }
 
     [Theory]

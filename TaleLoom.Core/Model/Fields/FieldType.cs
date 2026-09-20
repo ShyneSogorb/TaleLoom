@@ -12,6 +12,3 @@ public enum FieldType
     Reference = 6
 };
 
-namespace MyNamespace
-{
-}

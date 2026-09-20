@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace TaleLoom.ViewModels.Prefabs;
+namespace TaleLoom.ViewModels;
 
 public class ViewModelBase
 {
