@@ -25,11 +25,27 @@ public class Entity
     
     //Dictionary<FieldDefinition, ValueBase> _fieldValues = new();
     List<FieldEntity> _fieldValues = new();
-    public Entity(Prefab parent, Dictionary<FieldDefinition, ValueBase> fieldValues)
+
+    public Entity(Prefab parent, string name, IEnumerable<FieldEntity> fieldValues)
     {
         Id = new EntityId(Guid.NewGuid());
         Parent = parent;
-        _fieldValues = fieldValues.Select(pair => new FieldEntity(pair.Key, pair.Value)).ToList();
+        Name = name;
+        _fieldValues = fieldValues.ToList();
+    }
+    
+    public Entity(Prefab parent, string name, Dictionary<FieldDefinition, ValueBase> fieldValues) 
+        : this( parent, name, fieldValues.Select(pair => new FieldEntity(pair.Key, pair.Value)) )
+    { }
+
+    public Entity(Prefab prefab, string name) : this(prefab, name, prefab.Fields
+        .Select(f=> new FieldEntity(f, ValueFactory.Create(f.Type, f.DefaultValue)))
+        .ToList())
+    { }
+    
+    public static Entity Instantiate(Prefab prefab)
+    {
+        return new Entity(prefab, $"New {prefab.Name}");
     }
     
     public ValueBase this[FieldDefinition field]
@@ -38,16 +54,7 @@ public class Entity
         set => _fieldValues[field.Position - 1].Value = value;
     }
 
-    public Entity(Prefab prefab, string name)
-    {
-        Id = new EntityId(Guid.NewGuid());
-        Parent = prefab;
-        Name = name;
-        //Prefab.GetPrefabById(PrefabId).DefaultValues.ToList().ForEach(kv => _fieldValues.Add(kv.Key, kv.Value));
-        _fieldValues = prefab.Fields
-            .Select(f=> new FieldEntity(f, ValueFactory.Create(f.Type, f.DefaultValue)))
-            .ToList();
-    }
+
     
 
     private Entity(EntityId id, Prefab parent, string name)

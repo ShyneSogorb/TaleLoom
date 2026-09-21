@@ -24,7 +24,15 @@
                         
                         <Expander ExpandDirection="Down" Width="500">
                             <Expander.Header>
-                                <TextBlock Text="{Binding Name}" />
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" />
+                                        
+                                    <Button 
+                                        Grid.Column="1"
+                                        Content="+"
+                                        Command="{Binding $parent[UserControl].DataContext.CreateEntityCommand}"
+                                        CommandParameter="{Binding}"/>
+                                </Grid>
                             </Expander.Header>
 
                             <ItemsControl ItemsSource="{Binding Items}">
@@ -58,6 +66,7 @@
             </ItemsControl>
             
         </ScrollViewer>
+
         
     </Grid>
     
