@@ -23,12 +23,7 @@ public sealed class EntityDatabaseInitializer
         
     }
 
-    private string ToSqlType(FieldType fieldType)
-    {
-        if (fieldType == FieldType.Integer) return "INTEGER";
-        if (fieldType == FieldType.Float) return "REAL";
-        return "TEXT";
-    }
+
     
     public void Initialize(Prefab prefab)
     {
@@ -45,7 +40,7 @@ public sealed class EntityDatabaseInitializer
         });
         instructions.AddRange(
             prefab.Fields
-            .Select(f => $"'{f.Id.ToString()}' {ToSqlType(f.Type)}")
+            .Select(f => $"'{f.Id.ToString()}' {SQLUtils.ToSqlType(f.Type)}")
             .ToList()
         );
         

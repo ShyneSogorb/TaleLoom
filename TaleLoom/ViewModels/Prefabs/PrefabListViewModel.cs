@@ -22,6 +22,7 @@ public class PrefabListViewModel : ViewModelBase
     
     public ICommand EditPrefabCommand { get; }
     public ICommand CreatePrefabCommand { get; }
+    public ICommand DeletePrefabCommand { get; }
     
     public PrefabListViewModel(
         INavigationService navigationService,
@@ -37,8 +38,10 @@ public class PrefabListViewModel : ViewModelBase
         );
 
         EditPrefabCommand = new RelayCommand(EditPrefab);
+        DeletePrefabCommand = new RelayCommand(DeletePrefab);
 
         CreatePrefabCommand = new RelayCommand(_ => CreatePrefab());
+        
     }
     
     private void EditPrefab(object? parameter)
@@ -53,6 +56,14 @@ public class PrefabListViewModel : ViewModelBase
             new PrefabEditorViewModel(
                 prefab,
                 _repository));
+    }
+    
+    private void DeletePrefab(object? parameter)
+    {
+        if (parameter is not PrefabListItemViewModel prefabItem)
+            return;
+
+        _repository.DeletePrefab(prefabItem.ID);
     }
 
     private void CreatePrefab()

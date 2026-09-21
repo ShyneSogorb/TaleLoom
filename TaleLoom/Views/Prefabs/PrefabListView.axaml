@@ -28,7 +28,7 @@
                     <DataTemplate x:DataType="vm:PrefabListItemViewModel">
                     
                         <Grid
-                            ColumnDefinitions="*,Auto"
+                            ColumnDefinitions="*,Auto,Auto"
                             Margin="0,0,0,8">
                             
                             <TextBlock Grid.Column="0"
@@ -40,6 +40,12 @@
                                     Content="Edit"
                                     Margin="10,0,0,0"
                                     Command="{Binding $parent[UserControl].DataContext.EditPrefabCommand}"
+                                    CommandParameter="{Binding}"/>
+                            
+                            <Button Grid.Column="2"
+                                    Content="Edit"
+                                    Margin="10,0,0,0"
+                                    Command="{Binding $parent[UserControl].DataContext.DeletePrefabCommand}"
                                     CommandParameter="{Binding}"/>
                             
                         </Grid>

@@ -27,6 +27,7 @@ public sealed class PrefabRepository
             {
                 UpdatePrefab(prefab, connection, transaction);
                 UpdateFields(prefab, connection, transaction);
+                CreateEntityTable(prefab, connection, transaction);
             }
             else
             {
@@ -45,6 +46,8 @@ public sealed class PrefabRepository
             connection.Close();
         }
     }
+
+
 
     public bool ExistsPrefab(Prefab prefab)
     {
@@ -319,6 +322,62 @@ public sealed class PrefabRepository
         }        
         
         return prefab;
+    }
+
+    public void DeletePrefab(PrefabID id)
+    {
+        using var connection = _database.CreateConnection();
+        connection.Open();
+        using var transaction = connection.BeginTransaction();
+
+        try
+        {
+            DeletePrefabTable(id, connection, transaction);
+            DeleteEntityTable(id, connection, transaction);
+            transaction.Commit();
+        }
+        catch (Exception e)
+        {
+            transaction.Rollback();
+            Console.WriteLine(e);
+            throw;
+        }
+        finally
+        {
+            connection.Close();
+        }
+        
+        
+    }
+
+    private void DeletePrefabTable(PrefabID id, SqliteConnection connection, SqliteTransaction transaction)
+    {
+        var command = connection.CreateCommand();
+        command.Transaction = transaction;
+    }
+    
+    private void DeleteEntityTable(PrefabID id, SqliteConnection connection, SqliteTransaction transaction)
+    {}
+    
+    private void CreateEntityTable(Prefab prefab, SqliteConnection connection, SqliteTransaction transaction)
+    {
+        using var command = connection.CreateCommand();
+        command.Transaction = transaction;
+
+        List<string> instructions = new List<string>();
+        instructions.Capacity = prefab.Fields.Count + 2;
+        
+        instructions.Add("id TEXT PRIMARY KEY");
+        instructions.Add("name TEXT NOT NULL");
+
+        instructions.AddRange(
+            prefab.Fields.Select(f=> $"{f.Id.ToSqlString()} {SQLUtils.ToSqlType(f.Type)}")        
+            );
+        
+        
+        command.CommandText = $"CREATE TABLE IF NOT EXISTS '{prefab.ID}' ( {string.Join(",\n", instructions)} )";
+        command.ExecuteNonQuery();
+
     }
 
 }
