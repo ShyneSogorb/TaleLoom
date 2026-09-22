@@ -352,12 +352,31 @@ public sealed class PrefabRepository
         var command = connection.CreateCommand();
         command.Transaction = transaction;
         
-        command.CommandText = $"DELETE FROM {Prefab.PREFAB_TABLE} WHERE "
+        command.CommandText = $"DELETE FROM {Prefab.PREFAB_TABLE} WHERE id = @id";
+        command.Parameters.AddWithValue("@id", id.ToString());
+        command.ExecuteNonQuery();
         
+    }
+
+    private void DeleteEntityTable(PrefabID id, SqliteConnection connection, SqliteTransaction transaction)
+    {
+        var command = connection.CreateCommand();
+        command.Transaction = transaction;
+        
+        command.CommandText = $"DELETE FROM {Prefab.FIELDS_TABLE} WHERE prefab_id = @prefabId";
+        command.Parameters.AddWithValue("@prefabId", id.ToString());
+        command.ExecuteNonQuery();
     }
     
     private void DeleteEntityTable(PrefabID id, SqliteConnection connection, SqliteTransaction transaction)
-    {}
+    {
+        var command = connection.CreateCommand();
+        command.Transaction = transaction;
+        
+        command.CommandText = $"DELETE FROM {Prefab.FIELDS_TABLE} WHERE prefab_id = @prefabId";
+        command.Parameters.AddWithValue("@prefabId", id.ToString());
+        command.ExecuteNonQuery();
+    }
     
     private void CreateEntityTable(Prefab prefab, SqliteConnection connection, SqliteTransaction transaction)
     {

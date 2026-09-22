@@ -1,0 +1,1 @@
+SELECT p.name as prefab, f.* FROM field_definition f JOIN prefab p ON p.id = f.prefab_id
