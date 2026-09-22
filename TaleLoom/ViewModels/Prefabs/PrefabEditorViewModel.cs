@@ -16,7 +16,7 @@ public class PrefabEditorViewModel : ViewModelBase
    
     private readonly Prefab _prefab;
 
-    public PrefabID Id => _prefab.ID;
+    public PrefabID Id => _prefab.Id;
     
     
     private readonly PrefabRepository _repository;

@@ -40,7 +40,7 @@ public class EntityTests
 
         var entity = CreateEntity(prefab);
 
-        Assert.Equal(prefab.ID, entity.Parent.ID);
+        Assert.Equal(prefab.Id, entity.Parent.Id);
     }
 
     [Fact]

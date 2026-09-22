@@ -51,10 +51,10 @@ public class EntitiesListViewModel : ViewModelBase
             _prefabRepository.GetAllPrefabs()
             .Select(
                 prefab => new PrefabCategoryContainer(
-                    prefab.ID,
+                    prefab.Id,
                     prefab.Name,
                     _entityRepository.GetAllEntities(prefab)
-                    .Select(entity => new EntitiesListItemViewModel(entity.Id, entity.Name, prefab.ID))
+                    .Select(entity => new EntitiesListItemViewModel(entity.Id, entity.Name, prefab.Id))
                 )
             )
         );

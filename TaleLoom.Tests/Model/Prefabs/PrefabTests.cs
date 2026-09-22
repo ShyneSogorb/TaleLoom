@@ -10,9 +10,9 @@ public class PrefabTests
     public void Constructor_ShouldInitializeProperties()
     {
         var prefab = Prefab.CreateTransientPrefab("Character");
-        var id = prefab.ID;
+        var id = prefab.Id;
 
-        Assert.Equal(id, prefab.ID);
+        Assert.Equal(id, prefab.Id);
         Assert.Equal("Character", prefab.Name);
         Assert.Empty(prefab.Fields);
     }
@@ -31,10 +31,10 @@ public class PrefabTests
     public void Rename_ShouldNotChangeIdentity()
     {
         var prefab = CreatePrefab();
-        var id = prefab.ID;
+        var id = prefab.Id;
         
         prefab.Rename("NPC");
-        Assert.Equal(id, prefab.ID);
+        Assert.Equal(id, prefab.Id);
     }
     
     [Fact]

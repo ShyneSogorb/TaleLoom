@@ -34,7 +34,7 @@ public class PrefabListViewModel : ViewModelBase
         
         Prefabs = new ObservableCollection<PrefabListItemViewModel>(
             repository.GetAllPrefabs().Select(prefab => 
-                new PrefabListItemViewModel(prefab.ID, prefab.Name))
+                new PrefabListItemViewModel(prefab.Id, prefab.Name))
         );
 
         EditPrefabCommand = new RelayCommand(EditPrefab);

@@ -45,7 +45,7 @@ public sealed class EntityDatabaseInitializer
         );
         
 
-        command.CommandText = $"CREATE TABLE IF NOT EXISTS '{prefab.ID}' ( {string.Join(",\n", instructions)} )";
+        command.CommandText = $"CREATE TABLE IF NOT EXISTS '{prefab.Id}' ( {string.Join(",\n", instructions)} )";
         
         command.ExecuteNonQuery();
         
@@ -67,7 +67,7 @@ public sealed class EntityDatabaseInitializer
         
         command.CommandText +=
             $"""
-             INSERT OR IGNORE INTO '{entity.Parent.ID.ToString()}' ( id, name, {string.Join(",\n", entity.Parent.Fields.Select(f => $"'{f.Id.ToString()}'"))} )
+             INSERT OR IGNORE INTO '{entity.Parent.Id.ToString()}' ( id, name, {string.Join(",\n", entity.Parent.Fields.Select(f => $"'{f.Id.ToString()}'"))} )
              VALUES ( @id, @name, {string.Join(",\n", entity.Fields.Select(f => '@' + ToSqlName(f.Name)))});
              """;
 

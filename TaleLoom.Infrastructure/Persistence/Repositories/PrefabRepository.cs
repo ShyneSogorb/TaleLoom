@@ -55,8 +55,8 @@ public sealed class PrefabRepository
         connection.Open();
 
         var command = connection.CreateCommand();
-        command.CommandText = "SELECT COUNT(1) FROM prefab WHERE id = @id";
-        command.Parameters.AddWithValue("@id", prefab.ID.ToString());
+        command.CommandText = $"SELECT COUNT(1) FROM {Prefab.PREFAB_TABLE} WHERE id = @id";
+        command.Parameters.AddWithValue("@id", prefab.Id.ToString());
 
         var reader = command.ExecuteReader();
         reader.Read();
@@ -69,7 +69,7 @@ public sealed class PrefabRepository
         connection.Open();
 
         var command = connection.CreateCommand();
-        command.CommandText = "SELECT COUNT(1) FROM prefab WHERE name = @name";
+        command.CommandText = $"SELECT COUNT(1) FROM {Prefab.PREFAB_TABLE} WHERE name = @name";
         command.Parameters.AddWithValue("@name", name);
 
         var reader = command.ExecuteReader();
@@ -83,7 +83,7 @@ public sealed class PrefabRepository
         connection.Open();
 
         var command = connection.CreateCommand();
-        command.CommandText = "SELECT id FROM prefab WHERE name = @name";
+        command.CommandText = $"SELECT id FROM {Prefab.PREFAB_TABLE} WHERE name = @name";
         command.Parameters.AddWithValue("@name", name);
 
         var reader = command.ExecuteReader();
@@ -98,7 +98,7 @@ public sealed class PrefabRepository
         connection.Open();
 
         var command = connection.CreateCommand();
-        command.CommandText = "SELECT COUNT(1) FROM field_definition WHERE id = @id";
+        command.CommandText = $"SELECT COUNT(1) FROM {Prefab.FIELDS_TABLE} WHERE id = @id";
         command.Parameters.AddWithValue("@id", field.Id.ToString());
 
         var reader = command.ExecuteReader();
@@ -111,13 +111,13 @@ public sealed class PrefabRepository
         using var command = con.CreateCommand();
         command.Transaction = trans;
         command.CommandText =
-            """
-            UPDATE prefab
+            $"""
+            UPDATE {Prefab.PREFAB_TABLE}
             SET name = @name
             WHERE id = @id
             """;
 
-        command.Parameters.AddWithValue("@id", prefab.ID.ToString());
+        command.Parameters.AddWithValue("@id", prefab.Id.ToString());
         command.Parameters.AddWithValue("@name", prefab.Name);
 
         command.ExecuteNonQuery();
@@ -143,8 +143,8 @@ public sealed class PrefabRepository
         using var command = con.CreateCommand();
         command.Transaction = trans;
         command.CommandText =
-            """
-            UPDATE field_definition
+            $"""
+            UPDATE {Prefab.FIELDS_TABLE}
             SET name = @name, position = @position, type = @type, is_required = @is_required, is_active = @is_active
             WHERE id = @id
             """;
@@ -164,12 +164,12 @@ public sealed class PrefabRepository
         using var command = con.CreateCommand();
         command.Transaction = trans;
         command.CommandText =
-            """
-            INSERT INTO prefab (id, name)
+            $"""
+            INSERT INTO {Prefab.PREFAB_TABLE} (id, name)
             VALUES (@id, @name)
             """;
 
-        command.Parameters.AddWithValue("@id", prefab.ID.ToString());
+        command.Parameters.AddWithValue("@id", prefab.Id.ToString());
         command.Parameters.AddWithValue("@name", prefab.Name);
 
         command.ExecuteNonQuery();
@@ -188,12 +188,12 @@ public sealed class PrefabRepository
         using var command = con.CreateCommand();
         command.Transaction = trans;
         command.CommandText =
-            """
-            INSERT INTO field_definition( id, prefab_id, name, position, type, is_required, is_active, default_value )
+            $"""
+            INSERT INTO {Prefab.FIELDS_TABLE}( id, prefab_id, name, position, type, is_required, is_active, default_value )
             VALUES ( @id, @prefab_id, @name, @position, @type, @is_required, @is_active, @default_value )
             """;
         command.Parameters.AddWithValue("@id", field.Id.ToString());
-        command.Parameters.AddWithValue("@prefab_id", prefab.ID.ToString());
+        command.Parameters.AddWithValue("@prefab_id", prefab.Id.ToString());
         command.Parameters.AddWithValue("@name", field.Name);
         command.Parameters.AddWithValue("@position", field.Position);
         command.Parameters.AddWithValue("@type", field.Type);
@@ -216,10 +216,7 @@ public sealed class PrefabRepository
 
         var command = connection.CreateCommand();
 
-        command.CommandText =
-            """
-            SELECT id, name FROM prefab
-            """;
+        command.CommandText = $"SELECT id, name FROM {Prefab.PREFAB_TABLE}";
 
         var reader = command.ExecuteReader();
 
@@ -247,14 +244,14 @@ public sealed class PrefabRepository
 
         var command = connection.CreateCommand();
 
-        command.CommandText = """
+        command.CommandText = $"""
           SELECT id, name, position, type, is_required, is_active, default_value 
-          FROM field_definition 
+          FROM {Prefab.FIELDS_TABLE} 
           WHERE prefab_id = @prefab
           ORDER BY position
           """;
 
-        command.Parameters.AddWithValue("@prefab", prefab.ID.ToString());
+        command.Parameters.AddWithValue("@prefab", prefab.Id.ToString());
         var reader = command.ExecuteReader();
 
         while (reader.Read())
@@ -280,7 +277,7 @@ public sealed class PrefabRepository
 
         var command = connection.CreateCommand();
 
-        command.CommandText = "SELECT name FROM prefab WHERE id = @id";
+        command.CommandText = $"SELECT name FROM {Prefab.PREFAB_TABLE} WHERE id = @id";
         command.Parameters.AddWithValue("@id", id.ToString());
         
         var reader = command.ExecuteReader();
@@ -306,7 +303,7 @@ public sealed class PrefabRepository
 
         var command = connection.CreateCommand();
 
-        command.CommandText = "SELECT id FROM prefab WHERE name = @name";
+        command.CommandText = $"SELECT id FROM {Prefab.PREFAB_TABLE} WHERE name = @name";
         command.Parameters.AddWithValue("@name", name);
         
         var reader = command.ExecuteReader();
@@ -354,6 +351,9 @@ public sealed class PrefabRepository
     {
         var command = connection.CreateCommand();
         command.Transaction = transaction;
+        
+        command.CommandText = $"DELETE FROM {Prefab.PREFAB_TABLE} WHERE "
+        
     }
     
     private void DeleteEntityTable(PrefabID id, SqliteConnection connection, SqliteTransaction transaction)
@@ -374,8 +374,7 @@ public sealed class PrefabRepository
             prefab.Fields.Select(f=> $"{f.Id.ToSqlString()} {SQLUtils.ToSqlType(f.Type)}")        
             );
         
-        
-        command.CommandText = $"CREATE TABLE IF NOT EXISTS '{prefab.ID}' ( {string.Join(",\n", instructions)} )";
+        command.CommandText = $"CREATE TABLE IF NOT EXISTS '{prefab.Id}' ( {string.Join(",\n", instructions)} )";
         command.ExecuteNonQuery();
 
     }

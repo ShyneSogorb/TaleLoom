@@ -24,7 +24,7 @@ public sealed class EntityRepository
         connection.Open();
         var command = connection.CreateCommand();
 
-        command.CommandText = $"SELECT * FROM '{prefab.ID.ToString()}'";
+        command.CommandText = $"SELECT * FROM '{prefab.Id.ToString()}'";
 
         var reader = command.ExecuteReader();
         List<Entity> entities = new List<Entity>();
@@ -52,7 +52,7 @@ public sealed class EntityRepository
         command.CommandText =
             $"""
              SELECT name 
-             FROM {prefab.ID.ToSqlString()}
+             FROM {prefab.Id.ToSqlString()}
              WHERE id = @id;
              """;
 
@@ -86,7 +86,7 @@ public sealed class EntityRepository
         command.CommandText =
             $"""
              SELECT {string.Join(",", entity.Parent.Fields.Select(f => $"{f.Id.ToSqlField()} as '{f.Name}'"))}
-             FROM {entity.Parent.ID.ToSqlString()}
+             FROM {entity.Parent.Id.ToSqlString()}
              WHERE id = @id
              """;
 
@@ -111,7 +111,7 @@ public sealed class EntityRepository
         connection.Open();
 
         var command = connection.CreateCommand();
-        command.CommandText = $"SELECT COUNT(1) FROM {entity.Parent.ID.ToSqlField()} WHERE id = @id";
+        command.CommandText = $"SELECT COUNT(1) FROM {entity.Parent.Id.ToSqlField()} WHERE id = @id";
         command.Parameters.AddWithValue("@id", entity.Id.ToString());
 
         var reader = command.ExecuteReader();
@@ -156,7 +156,7 @@ public sealed class EntityRepository
         command.Transaction = trans;
         command.CommandText = 
             $"""
-            INSERT INTO {entity.Parent.ID.ToSqlField()} 
+            INSERT INTO {entity.Parent.Id.ToSqlField()} 
             (id, name, {string.Join(",", entity.Fields.Select(f=>f.Id.ToSqlField()))})
             VALUES
             (@id, @name, {string.Join(",", entity.Fields.Select(f=> "@" + SQLUtils.ToSqlName(f.Name)))})
@@ -183,7 +183,7 @@ public sealed class EntityRepository
         command.Transaction = trans;
         command.CommandText = 
             $"""
-             UPDATE {entity.Parent.ID.ToSqlField()} SET
+             UPDATE {entity.Parent.Id.ToSqlField()} SET
              name = @name, {string.Join(",", 
                  entity.Fields.Select(f=> $"{f.Id.ToSqlField()} = {GetFieldParameterName(f.Id)} "))
              }

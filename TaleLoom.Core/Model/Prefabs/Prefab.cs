@@ -21,16 +21,21 @@ public sealed class Prefab
     //     return result;
     // }
 
+    public static readonly string PREFAB_TABLE = "prefabs";
+    public static readonly string FIELDS_TABLE = "fields";
+    
+    
+    
     private List<FieldDefinition> _fields = [];
 
-    [PrimaryKey] public PrefabID ID { get; private set; }
+    [PrimaryKey] public PrefabID Id { get; private set; }
 
     [Unique] public string Name { get; private set; }
 
     public IReadOnlyList<FieldDefinition> Fields => _fields.AsReadOnly();
     private Prefab(string name, bool transient)
     {
-        ID = new PrefabID();
+        Id = new PrefabID();
         Name = name;
         if (!transient)
         {
@@ -40,7 +45,7 @@ public sealed class Prefab
 
     private Prefab(PrefabID id, string name)
     {
-        ID = id;
+        Id = id;
         Name = name;
     }
 
@@ -69,7 +74,7 @@ public sealed class Prefab
 
     public void FixId(PrefabID id)
     {
-        ID = id;
+        Id = id;
     }
     
     public static Prefab CreateOrGetPrefab(string name)
