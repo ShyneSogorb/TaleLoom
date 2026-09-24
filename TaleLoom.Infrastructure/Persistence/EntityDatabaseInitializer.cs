@@ -40,7 +40,7 @@ public sealed class EntityDatabaseInitializer
         });
         instructions.AddRange(
             prefab.Fields
-            .Select(f => $"'{f.Id.ToString()}' {SQLUtils.ToSqlType(f.Type)}")
+            .Select(f => $"'{f.Id.ToString()}' {SQLUtils.ToSqlTypeName(f.Type)}")
             .ToList()
         );
         

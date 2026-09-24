@@ -9,9 +9,10 @@ public static class ValueFactory
         [FieldType.Integer] = value => new IntegerValue(value),
         [FieldType.Float]   = value => new DoubleValue(value),
         [FieldType.Name]    = value => new NameValue(value),
-        //[FieldType.Text]    = value => new TextValue(value),
-        //[FieldType.Image]   = value => new ImageValue(value),
-        //[FieldType.Url]     = value => new UrlValue(value),
+        [FieldType.Text]    = value => new TextValue(value),
+        [FieldType.Image]   = value => new ImageValue(value),
+        [FieldType.Url]     = value => new UrlValue(value),
+        [FieldType.Reference]=value => new ReferenceValue(value),
     };
 
     public static ValueBase Create(FieldType type, object? value)

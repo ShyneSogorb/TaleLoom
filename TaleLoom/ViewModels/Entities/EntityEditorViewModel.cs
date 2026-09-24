@@ -5,6 +5,7 @@ using TaleLoom.Core.Model.Entities;
 using TaleLoom.Core.Model.Fields;
 using TaleLoom.Core.Model.Prefabs;
 using TaleLoom.Infrastructure.Persistence;
+using TaleLoom.ViewModels.Entities.Fields;
 using TaleLoom.ViewModels.Prefabs;
 
 namespace TaleLoom.ViewModels.Entities;
@@ -39,7 +40,7 @@ public class EntityEditorViewModel : ViewModelBase
         _entityRepository = entityRepository;
 
         Fields = entity.FieldsData
-            .Select(f => new EntityFieldEditorViewModel(f))
+            .Select(EntityFieldEdVmFactory.Create)
             .ToList();
 
         SaveEntityCommand = new RelayCommand(_ => SaveEntity());

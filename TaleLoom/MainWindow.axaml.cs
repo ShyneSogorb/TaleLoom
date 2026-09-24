@@ -1,5 +1,8 @@
+using System;
+using System.IO;
 using Avalonia.Controls;
 using TaleLoom.Core.Model.Entities;
+using TaleLoom.Infrastructure.Files;
 using TaleLoom.Infrastructure.Persistence;
 using TaleLoom.Services;
 
@@ -31,7 +34,8 @@ public partial class MainWindow : Window
         
         entityInitializer.Initialize(prefabs[0]);
         //entityInitializer.Populate(new Entity(prefabs[0], "Ythia"));
-        
+
+        Console.Write("Tale loom location is " + TaleLoomDataDirectory.Root);
         
         DataContext = new AppShellViewModel(navigationService, prefabRepository, entityRepository);
 

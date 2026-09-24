@@ -1,8 +1,10 @@
 ﻿using System.Windows.Input;
+using TaleLoom.Infrastructure.Files;
 using TaleLoom.Infrastructure.Persistence;
 using TaleLoom.Services;
 using TaleLoom.ViewModels.Entities;
 using TaleLoom.ViewModels.Home;
+using TaleLoom.ViewModels.Images;
 using TaleLoom.ViewModels.Prefabs;
 
 namespace TaleLoom.ViewModels.Shell;
@@ -12,6 +14,7 @@ public class AppShellViewModel : ViewModelBase
     private readonly INavigationService _navigationService;
     private readonly PrefabRepository _prefabRepository;
     private readonly EntityRepository _entityRepository;
+    private readonly ImageLibrary _imageLibrary;
 
     public INavigationService Navigation => _navigationService;
 
@@ -19,6 +22,7 @@ public class AppShellViewModel : ViewModelBase
     public ICommand NavigatePrefabsCommand { get; }
     
     public ICommand NavigateEntityCommand { get; }
+    public ICommand NavigateGalleryCommand { get; }
     
     public AppShellViewModel(
         INavigationService navigationService,
@@ -28,6 +32,8 @@ public class AppShellViewModel : ViewModelBase
         _navigationService = navigationService;
         _prefabRepository = prefabRepository;
         _entityRepository = entityRepository;
+
+        _imageLibrary = new ImageLibrary();
 
         NavigateHomeCommand = new RelayCommand(
             _ => _navigationService.Navigate(
@@ -45,6 +51,11 @@ public class AppShellViewModel : ViewModelBase
                     _navigationService,
                     _entityRepository,
                     _prefabRepository)));
-        
+
+        NavigateGalleryCommand = new RelayCommand(
+            _ => _navigationService.Navigate(
+                new ImageGalleryViewModel(_imageLibrary))
+        );
+
     }
 }

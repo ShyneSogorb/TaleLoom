@@ -1,0 +1,15 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TaleLoom.ViewModels.Entities"
+             x:Class="TaleLoom.Views.Entities.Fields.UrlFieldEditor"
+             x:DataType="vm:EntityFieldEditorViewModel"
+>
+    
+    <StackPanel Spacing="4">
+        
+        <TextBlock Text="{Binding Field.Name}" />
+        
+        <TextBlock Text="{Binding Field.Type}" />
+        
+    </StackPanel>
+</UserControl>

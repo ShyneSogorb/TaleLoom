@@ -22,4 +22,23 @@
       <ProjectReference Include="..\TaleLoom.Infrastructure\TaleLoom.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Views\Entities\Fields\TextFieldEditor.axaml.cs">
+        <DependentUpon>TextFieldEditor.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Entities\Fields\ImageFieldEditor.axaml.cs">
+        <DependentUpon>ImageFieldEditor.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Entities\Fields\UrlFieldEditor.axaml.cs">
+        <DependentUpon>UrlFieldEditor.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Entities\Fields\ReferenceFieldEditor.axaml.cs">
+        <DependentUpon>ReferenceFieldEditor.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
 </Project>

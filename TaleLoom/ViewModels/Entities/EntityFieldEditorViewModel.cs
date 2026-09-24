@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Avalonia.Media.Imaging;
 using TaleLoom.Core.Model.Entities;
 using TaleLoom.Core.Model.Fields;
 using TaleLoom.Core.Model.Prefabs;
@@ -44,6 +45,25 @@ public class EntityFieldEditorViewModel : ViewModelBase
             return null;
         }
         set => _fieldEntity.Value.SetData(value);
+    }
+
+    public Bitmap? ValueAsImage
+    {
+        get
+        {
+            if (_fieldEntity.Value.TryGet(out string value))
+            {
+                return new Bitmap(value);
+            }
+            return null;
+        }
+    }
+
+    public void SetValueAsImage(string value)
+    {
+        if (_fieldEntity.Value.IsValid && _fieldEntity.Value.Get<string>() == value) return;
+        _fieldEntity.Value.SetData(value);
+        OnPropertyChanged(nameof(ValueAsImage));
     }
 
     public EntityFieldEditorViewModel(Entity.FieldEntity fieldEntity)

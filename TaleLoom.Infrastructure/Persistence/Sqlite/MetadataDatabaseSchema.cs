@@ -9,8 +9,6 @@ namespace TaleLoom.Infrastructure.Persistence;
 public static class DatabaseSchemaConstructor
 {
     
-
-    
     public static string PropertyName(PropertyInfo propertyInfo)
     {
         return SQLUtils.ToSqlName(propertyInfo.GetCustomAttribute<CustomNameAttribute>()?.Name ?? propertyInfo.Name);
@@ -43,7 +41,7 @@ public static class DatabaseSchemaConstructor
         return nullability.ReadState == NullabilityState.Nullable;
     }
     
-    public static void CreateTable<T>(SqliteCommand command)
+    public static void CreateTable<T>(SqliteCommand command) where T : IDatabaseEntity
     {
         Type type = typeof(T);
         var properties = type.GetProperties()
@@ -73,7 +71,7 @@ public static class DatabaseSchemaConstructor
             
             PropertyInfo refenceId = PkForReference(property);
             
-            instructions.Add($"FOREIGN KEY ({PropertyName(property)}) REFERENCES {SQLUtils.ToSqlName(property.PropertyType.Name)}({PropertyName(refenceId)})");
+            instructions.Add($"FOREIGN KEY ({PropertyName(property)}) REFERENCES {GetTable(property.PropertyType)}({PropertyName(refenceId)})");
         }
         
         foreach (var property in properties.Where(p=>p.GetCustomAttribute<UniqueAttribute>() != null) )
@@ -101,10 +99,14 @@ public static class DatabaseSchemaConstructor
             instructions.Add($"UNIQUE ({string.Join(", ", combination)})");
         }
 
-        command.CommandText += $"CREATE TABLE IF NOT EXISTS {SQLUtils.ToSqlName(type.Name)} (\n" + string.Join(",\n\t", instructions) + "\n);\n";
+        command.CommandText += $"CREATE TABLE IF NOT EXISTS {T.Table} (\n" + string.Join(",\n\t", instructions) + "\n);\n";
     }
 
-    public static void InsertToTable<T>(ref SqliteCommand command, T instance)
+    private static string GetTable(Type type)
+    {
+        return type.GetCustomAttribute<CustomNameAttribute>()!.Name;
+    }
+    public static void InsertToTable<T>(ref SqliteCommand command, T instance) where T : IDatabaseEntity
     {
         Type type = typeof(T);
         var properties = type.GetProperties()
@@ -113,7 +115,7 @@ public static class DatabaseSchemaConstructor
 
         command.CommandText +=
             $"""
-             INSERT INTO {SQLUtils.ToSqlName(type.Name)} ( {string.Join(',', properties.Select(PropertyName))} )
+             INSERT INTO {T.Table} ( {string.Join(',', properties.Select(PropertyName))} )
              VALUES ({string.Join(',', properties.Select(p => '@' + PropertyName(p)))});\n\n
              """;
 

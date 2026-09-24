@@ -22,7 +22,7 @@ public class UniqueAttribute : SerializedAttribute
     public readonly string[] Combination;
 }
 
-[AttributeUsage(AttributeTargets.Property)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Class)]
 public class CustomNameAttribute : SerializedAttribute
 {
     

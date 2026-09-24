@@ -10,10 +10,13 @@ public static class SqlDebug
 
         foreach (SqliteParameter parameter in command.Parameters)
         {
+            bool isText = parameter.SqliteType == SqliteType.Text;
             var value = parameter.Value?.ToString()?.Replace("'", "''");
+            if (value?.Length == 0) value = null;
+            
             sql = sql.Replace(
                 parameter.ParameterName,
-                $"'{value}'");
+                $"{(isText ? "'" : "")}{value ?? "null"}{(isText ? "'" : "")}");
         }
 
         return sql;

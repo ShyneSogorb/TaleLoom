@@ -157,9 +157,9 @@ public sealed class EntityRepository
         command.CommandText = 
             $"""
             INSERT INTO {entity.Parent.Id.ToSqlField()} 
-            (id, name, {string.Join(",", entity.Fields.Select(f=>f.Id.ToSqlField()))})
+            (id, name, {string.Join(", ", entity.Fields.Select(f=>f.Id.ToSqlField()))})
             VALUES
-            (@id, @name, {string.Join(",", entity.Fields.Select(f=> "@" + SQLUtils.ToSqlName(f.Name)))})
+            (@id, @name, {string.Join(", ", entity.Fields.Select(f=> "@" + SQLUtils.ToSqlName(f.Name)))})
             """;
 
         command.Parameters.AddWithValue("@id", entity.Id.ToString());
@@ -167,10 +167,13 @@ public sealed class EntityRepository
 
         foreach (var fieldEntity in entity.FieldsData)
         {
-            command.Parameters.AddWithValue(
-                "@" + SQLUtils.ToSqlName(fieldEntity.Definition.Name),
-                fieldEntity.Value.GetData()
-            );
+            var param = command.CreateParameter();
+
+            param.SqliteType = SQLUtils.ToSqlType(fieldEntity.Definition.Type);
+            param.ParameterName = '@' + SQLUtils.ToSqlName(fieldEntity.Definition.Name);
+            param.Value = fieldEntity.Value?.GetData() ?? DBNull.Value;
+            param.IsNullable = true;
+            command.Parameters.Add(param);
         }
         SqlDebug.GetSqlLine(command);
         
@@ -185,7 +188,7 @@ public sealed class EntityRepository
             $"""
              UPDATE {entity.Parent.Id.ToSqlField()} SET
              name = @name, {string.Join(",", 
-                 entity.Fields.Select(f=> $"{f.Id.ToSqlField()} = {GetFieldParameterName(f.Id)} "))
+                 entity.Fields.Select(f=> $"{f.Id.ToSqlField()} = @{SQLUtils.ToSqlName(f.Name)}"))
              }
              WHERE id = @id
              """;
@@ -195,10 +198,13 @@ public sealed class EntityRepository
 
         foreach (var fieldEntity in entity.FieldsData)
         {
-            command.Parameters.AddWithValue(
-                GetFieldParameterName(fieldEntity.Definition.Id),
-                fieldEntity.Value.GetData()
-            );
+            var param = command.CreateParameter();
+
+            param.SqliteType = SQLUtils.ToSqlType(fieldEntity.Definition.Type);
+            param.ParameterName = '@' + SQLUtils.ToSqlName(fieldEntity.Definition.Name);
+            param.Value = fieldEntity.Value?.GetData() ?? DBNull.Value;
+            param.IsNullable = true;
+            command.Parameters.Add(param);
         }
 
         SqlDebug.GetSqlLine(command);

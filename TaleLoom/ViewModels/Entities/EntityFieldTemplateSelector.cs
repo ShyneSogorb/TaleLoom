@@ -6,9 +6,13 @@ namespace TaleLoom.ViewModels.Entities;
 
 public class EntityFieldTemplateSelector : IDataTemplate
 {
+    public IDataTemplate NameTemplate { get; set; } = null;
     public IDataTemplate IntegerTemplate { get; set; } = null;
     public IDataTemplate FloatTemplate { get; set; } = null;
-    public IDataTemplate NameTemplate { get; set; } = null;
+    public IDataTemplate TextTemplate {get; set; } = null;
+    public IDataTemplate ImageTemplate {get; set; } = null;
+    public IDataTemplate UrlTemplate {get; set; } = null;
+    public IDataTemplate ReferenceTemplate {get; set; } = null;
 
     public Control? Build(object? param)
     {
@@ -17,9 +21,13 @@ public class EntityFieldTemplateSelector : IDataTemplate
 
         IDataTemplate? template = field.Field.Type switch
         {
-            FieldType.Integer => IntegerTemplate,
-            FieldType.Float => FloatTemplate,
-            FieldType.Name => NameTemplate,
+            FieldType.Name      => NameTemplate,
+            FieldType.Integer   => IntegerTemplate,
+            FieldType.Float     => FloatTemplate,
+            FieldType.Text      => TextTemplate,
+            FieldType.Image     => ImageTemplate,
+            FieldType.Url       => UrlTemplate,
+            FieldType.Reference => ReferenceTemplate,
             _ => null
         };
         

@@ -5,8 +5,11 @@ using TaleLoom.Core.Model.Prefabs;
 
 namespace TaleLoom.Core.Model.Fields;
 
-public sealed class FieldDefinition
+[CustomName("fields")]
+public sealed class FieldDefinition : IDatabaseEntity
 {
+    public static string Table => "fields";
+    
     [PrimaryKey]
     public FieldId Id { get; }
     

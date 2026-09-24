@@ -5,7 +5,8 @@ using TaleLoom.Core.Model.Values;
 
 namespace TaleLoom.Core.Model.Prefabs;
 
-public sealed class Prefab
+[CustomName("prefabs")]
+public sealed class Prefab : IDatabaseEntity
 {
 
     // static List<Prefab> _prefabs = new();
@@ -21,8 +22,7 @@ public sealed class Prefab
     //     return result;
     // }
 
-    public static readonly string PREFAB_TABLE = "prefabs";
-    public static readonly string FIELDS_TABLE = "fields";
+    public static string Table => "prefabs";
     
     
     

@@ -4,6 +4,8 @@
              xmlns:homeViews="using:TaleLoom.Views.Home"
              xmlns:prefabVm="using:TaleLoom.ViewModels.Prefabs"
              xmlns:prefabViews="using:TaleLoom.Views.Prefabs"
+             xmlns:imageVm="using:TaleLoom.ViewModels.Images"
+             xmlns:imageViews="using:TaleLoom.Views.Images"
              xmlns:entityVm="using:TaleLoom.ViewModels.Entities"
              xmlns:entityViews="using:TaleLoom.Views.Entities"
              xmlns:entityFields="using:TaleLoom.Views.Entities.Fields"
@@ -33,6 +35,10 @@
             <entityViews:EntityEditorView />
         </DataTemplate>
         
+        <DataTemplate DataType="{x:Type imageVm:ImageGalleryViewModel}">
+            <imageViews:ImageGalleryView />
+        </DataTemplate>
+        
     </Application.DataTemplates>
              
     <Application.Resources>
@@ -48,11 +54,31 @@
             <entityFields:NameFieldEditor />
         </DataTemplate>
         
+        <DataTemplate x:Key="TextFieldTemplate">
+            <entityFields:TextFieldEditor />
+        </DataTemplate>
+        
+        <DataTemplate x:Key="ImageFieldTemplate">
+            <entityFields:ImageFieldEditor />
+        </DataTemplate>
+        
+        <DataTemplate x:Key="UrlFieldTemplate">
+            <entityFields:UrlFieldEditor />
+        </DataTemplate>
+        
+        <DataTemplate x:Key="ReferenceFieldTemplate">
+            <entityFields:ReferenceFieldEditor />
+        </DataTemplate>
+        
         <entityVm:EntityFieldTemplateSelector
             x:Key="EntityFieldTemplateSelector"
             IntegerTemplate="{StaticResource IntegerFieldTemplate}"
             FloatTemplate="{StaticResource FloatFieldTemplate}"
             NameTemplate="{StaticResource NameFieldTemplate}"
+            TextTemplate="{StaticResource TextFieldTemplate}"
+            ImageTemplate="{StaticResource  ImageFieldTemplate}"
+            UrlTemplate="{StaticResource UrlFieldTemplate}" 
+            ReferenceTemplate="{StaticResource ReferenceFieldTemplate}" 
             />
         
         

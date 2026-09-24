@@ -4,10 +4,9 @@ using TaleLoom.Core.Model.Fields;
 
 namespace TaleLoom.Core.Model.Values;
 
-public sealed class ImageValue : ValueBase
+public sealed class ReferenceValue : ValueBase
 {
-
-    public override FieldType Type => FieldType.Image;
+    public override FieldType Type => FieldType.Name;
     public override bool IsValid => Data != null;
     
     public string? Value
@@ -15,13 +14,11 @@ public sealed class ImageValue : ValueBase
         get => (string?)Data;
         set => Data = value;
     }
-    
-    public ImageValue(object? value = null) : base(value) { }
     protected override object? ParseData(object? value)
     {
         return value is null ? null : Convert.ToString(value);
     }
-
+    public ReferenceValue(object? value = null) : base(value) { }
     public override bool CanConvertTo<T>()
     {
         if(Data == null)
@@ -39,8 +36,6 @@ public sealed class ImageValue : ValueBase
             return false;
         }
     }
-    
-    //public ImageValue(object? value = null) : base(value) { }
 
     protected override T GetImpl<T>()
     {

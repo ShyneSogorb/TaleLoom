@@ -4,28 +4,36 @@ using TaleLoom.Core.Model.Fields;
 
 namespace TaleLoom.Core.Model.Values;
 
-public sealed class UrlValue(string? _data) : ValueBase
+public sealed class UrlValue : ValueBase
 {
     public override FieldType Type => FieldType.Url;
-    public override bool IsValid => _data != null;
-
+    public override bool IsValid => Data != null;
+    
+    public string? Value
+    {
+        get => (string?)Data;
+        set => Data = value;
+    }
+    
+    public UrlValue(object? value = null) : base(value) { }
+    
     protected override object? ParseData(object? value)
     {
-        throw new NotImplementedException();
+        return value is null ? null : Convert.ToString(value);
     }
     
     //public UrlValue(object? value = null) : base(value) { }
 
     public override bool CanConvertTo<T>()
     {
-        if(_data == null)
+        if(Data == null)
         {
             return false;
         }
 
         try
         {
-            Convert.ChangeType(_data, typeof(T));
+            Convert.ChangeType(Data, typeof(T));
             return true;
         }
         catch (Exception e)
@@ -36,15 +44,15 @@ public sealed class UrlValue(string? _data) : ValueBase
 
     protected override T GetImpl<T>()
     {
-        Debug.Assert(_data != null, nameof(_data) + " != null");
-        if (_data is T result)
+        Debug.Assert(Data != null, nameof(Data) + " != null");
+        if (Data is T result)
         {
             return result;
         }
 
         try
         {
-            return (T)Convert.ChangeType(_data, typeof(T));
+            return (T)Convert.ChangeType(Data, typeof(T));
         }
         catch (Exception e)
         {

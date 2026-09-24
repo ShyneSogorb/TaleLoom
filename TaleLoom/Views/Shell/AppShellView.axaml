@@ -22,6 +22,7 @@
             <Button Content="Home" Command="{Binding  NavigateHomeCommand}"/>
             <Button Content="Prefabs" Command="{Binding NavigatePrefabsCommand}"/>
             <Button Content="Entities" Command="{Binding NavigateEntityCommand}"/>
+            <Button Content="Gallery" Command="{Binding NavigateGalleryCommand}"/>
             
         </StackPanel>
         
