@@ -8,6 +8,7 @@ using TaleLoom.Services;
 
 using TaleLoom.ViewModels.Home;
 using TaleLoom.ViewModels.Shell;
+using TaleLoom.Views.Timeline;
 
 namespace TaleLoom;
 
@@ -20,24 +21,23 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         var navigationService = new NavigationService();
-        navigationService.Navigate(new HomeViewModel());
+        //navigationService.Navigate(new HomeViewModel());
+        navigationService.Navigate(new TimelineView());
 
-        var prefabDatabase = new SqliteDatabase("TaleLoom.db");
-        var prefabRepository = new PrefabRepository(prefabDatabase);
-        var prefabInitializer = new PrefabDatabaseInitializer(prefabDatabase);
+        var sqliteDatabase = new SqliteDatabase("TaleLoom.db");
+        var repository = new TaleLoomRepository(sqliteDatabase);
+        var prefabInitializer = new PrefabDatabaseInitializer(sqliteDatabase);
         prefabInitializer.Initialize();
         var prefabs = prefabInitializer.Populate();
         
-        var entityDatabase = new SqliteDatabase("TaleLoom.db");
-        var entityRepository = new EntityRepository(entityDatabase);
-        var entityInitializer = new EntityDatabaseInitializer(entityDatabase);
+        var entityInitializer = new EntityDatabaseInitializer(sqliteDatabase);
         
         entityInitializer.Initialize(prefabs[0]);
         //entityInitializer.Populate(new Entity(prefabs[0], "Ythia"));
 
         Console.Write("Tale loom location is " + TaleLoomDataDirectory.Root);
         
-        DataContext = new AppShellViewModel(navigationService, prefabRepository, entityRepository);
+        DataContext = new AppShellViewModel(navigationService, repository);
 
     }
 }

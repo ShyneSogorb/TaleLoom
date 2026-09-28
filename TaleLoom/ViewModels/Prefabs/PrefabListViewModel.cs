@@ -14,7 +14,7 @@ public class PrefabListViewModel : ViewModelBase
 {
 
     private readonly INavigationService _navigationService;
-    private readonly PrefabRepository _repository;
+    private readonly TaleLoomRepository _repository;
     public ObservableCollection<PrefabListItemViewModel> Prefabs { get; }
     
     private readonly Action<PrefabID> _editPrefab;
@@ -26,7 +26,7 @@ public class PrefabListViewModel : ViewModelBase
     
     public PrefabListViewModel(
         INavigationService navigationService,
-        PrefabRepository repository
+        TaleLoomRepository repository
         )
     {
         _repository = repository;

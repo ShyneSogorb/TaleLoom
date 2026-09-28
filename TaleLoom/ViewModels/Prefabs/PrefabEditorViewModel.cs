@@ -19,7 +19,7 @@ public class PrefabEditorViewModel : ViewModelBase
     public PrefabID Id => _prefab.Id;
     
     
-    private readonly PrefabRepository _repository;
+    private readonly TaleLoomRepository _repository;
 
     public string Name
     {
@@ -35,28 +35,28 @@ public class PrefabEditorViewModel : ViewModelBase
             OnPropertyChanged();
         }
     } 
-    public ObservableCollection<FieldDefinitionViewModel> Fields { get; }
+    public ObservableCollection<PrefabFieldDefinitionViewModel> Fields { get; }
 
-    public ObservableCollection<FieldDefinitionViewModel> ActiveFields
+    public ObservableCollection<PrefabFieldDefinitionViewModel> ActiveFields
     {
         get => new (Fields.Where(f => f.IsActive));
     }
 
-    public PrefabEditorViewModel(Prefab prefab, PrefabRepository repository)
+    public PrefabEditorViewModel(Prefab prefab, TaleLoomRepository repository)
     {
         _prefab = prefab;
-        Fields = new ObservableCollection<FieldDefinitionViewModel>(
+        _repository = repository;
+        Fields = new ObservableCollection<PrefabFieldDefinitionViewModel>(
             prefab.Fields
                 .OrderBy(field => field.Position)
-                .Select(field => new FieldDefinitionViewModel(prefab, field))
+                .Select(field => new PrefabFieldDefinitionViewModel(prefab, field, _repository))
         );
-        _repository = repository;
 
         AddFieldCommand = new RelayCommand(_ => AddField());
 
         DeactivateFieldCommand = new RelayCommand(parameter =>
         {
-            if (parameter is FieldDefinitionViewModel field)
+            if (parameter is PrefabFieldDefinitionViewModel field)
             {
                 field.IsActive = false;
             }
@@ -64,7 +64,7 @@ public class PrefabEditorViewModel : ViewModelBase
 
         MoveFieldUpCommand = new RelayCommand(parameter =>
         {
-            if (parameter is FieldDefinitionViewModel field)
+            if (parameter is PrefabFieldDefinitionViewModel field)
             {
                 MoveFieldUp(field);
             }
@@ -72,7 +72,7 @@ public class PrefabEditorViewModel : ViewModelBase
         
         MoveFieldDownCommand = new RelayCommand(parameter =>
         {
-            if (parameter is FieldDefinitionViewModel field)
+            if (parameter is PrefabFieldDefinitionViewModel field)
             {
                 MoveFieldDown(field);
             }
@@ -85,7 +85,7 @@ public class PrefabEditorViewModel : ViewModelBase
     {
         var field = _prefab.GetField(_prefab.AddField(name, type));
 
-        var viewModel = new FieldDefinitionViewModel(_prefab, field);
+        var viewModel = new PrefabFieldDefinitionViewModel(_prefab, field, _repository);
         
         ActiveFields.Add(viewModel);
         Fields.Add(viewModel);
@@ -104,9 +104,9 @@ public class PrefabEditorViewModel : ViewModelBase
         }
     }
 
-    public void MoveFieldUp(FieldDefinitionViewModel field)
+    public void MoveFieldUp(PrefabFieldDefinitionViewModel prefabField)
     {
-        var index = Fields.IndexOf(field);
+        var index = Fields.IndexOf(prefabField);
 
         if (index <= 0) return;
         
@@ -115,9 +115,9 @@ public class PrefabEditorViewModel : ViewModelBase
         
     }
 
-    public void MoveFieldDown(FieldDefinitionViewModel field)
+    public void MoveFieldDown(PrefabFieldDefinitionViewModel prefabField)
     {
-        var index = Fields.IndexOf(field);
+        var index = Fields.IndexOf(prefabField);
         
         if (index < 0 || index >= Fields.Count - 1) return;
         

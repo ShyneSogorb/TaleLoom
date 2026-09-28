@@ -91,6 +91,11 @@ public class Entity
         return new Entity(id, parent, name);
     }
     
+    public static Entity Load(ObjectIdentifier identifier, Prefab parent)
+    {
+        return Load(new EntityId(Guid.Parse(identifier.Id)), parent, identifier.Name);
+    }
+    
     public void LoadFields( Dictionary<FieldDefinition, ValueBase> values)
     {
         _fieldValues.AddRange(

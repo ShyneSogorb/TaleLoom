@@ -53,6 +53,11 @@ public sealed class Prefab : IDatabaseEntity
     {
         return new Prefab(id, name);
     }
+    
+    public static Prefab Load(ObjectIdentifier obj)
+    {
+        return new Prefab(new PrefabID(Guid.Parse(obj.Id)), obj.Name);
+    }
 
     public FieldDefinition LoadField(FieldId id, string name, int position, FieldType type, bool isRequired, bool isActive, string? defaultValue)
     {

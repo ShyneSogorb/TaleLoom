@@ -17,7 +17,7 @@ public sealed class DoubleValue : ValueBase
 
     protected override object? ParseData(object? value)
     {
-        return value is null ? null : Convert.ToString(value);
+        return value is null ? null : Convert.ToDouble(value);
     }
 
     public DoubleValue(double? data)
@@ -60,14 +60,12 @@ public sealed class DoubleValue : ValueBase
     protected override T GetImpl<T>()
     {
         Debug.Assert(Data != null, nameof(Data) + " != null");
-        if (Value is T result)
-        {
+        if (Data is T result)
             return result;
-        }
 
         try
         {
-            return (T)Convert.ChangeType(Value, typeof(T));
+            return (T)Convert.ChangeType(Value, typeof(T)) ?? throw new InvalidOperationException();
         }
         catch (Exception e)
         {

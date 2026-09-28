@@ -8,40 +8,40 @@ using TaleLoom.Core.Model.Values;
 
 namespace TaleLoom.Infrastructure.Persistence;
 
-public sealed class EntityRepository
+public partial class TaleLoomRepository
 {
 
-    private readonly SqliteDatabase _database;
-
-    public EntityRepository(SqliteDatabase database)
-    {
-        _database = database;
-    }
-
-    public List<Entity> GetAllEntities(Prefab prefab)
+    public List<ObjectIdentifier> GetAllEntitiesSimple(PrefabID id)
     {
         using var connection = _database.CreateConnection();
         connection.Open();
         var command = connection.CreateCommand();
 
-        command.CommandText = $"SELECT * FROM '{prefab.Id.ToString()}'";
+        command.CommandText = $"SELECT * FROM '{id.ToString()}'";
 
         var reader = command.ExecuteReader();
-        List<Entity> entities = new List<Entity>();
+        List<ObjectIdentifier> entities = new List<ObjectIdentifier>();
 
         while (reader.Read())
         {
-            var id = new EntityId(Guid.Parse(reader.GetString(0)));
-
-            entities.Add(Entity.Load(
-                id,
-                prefab,
+            entities.Add(new ObjectIdentifier(
+                reader.GetString(0),
                 reader.GetString(1)
             ));
         }
 
         return entities;
     }
+
+    public List<ObjectIdentifier> GetAllEntitiesSimple(Prefab prefab) => GetAllEntitiesSimple(prefab.Id);
+    
+    public List<Entity> GetAllEntities(Prefab prefab)
+    {
+        return GetAllEntitiesSimple(prefab)
+            .Select(obj => Entity.Load(obj, prefab))
+            .ToList();
+    }
+    
 
     public Entity GetEntityById(Prefab prefab, EntityId id, bool getFields = true)
     {

@@ -6,7 +6,7 @@ namespace TaleLoom.Core.Model.Values;
 
 public sealed class ReferenceValue : ValueBase
 {
-    public override FieldType Type => FieldType.Name;
+    public override FieldType Type => FieldType.Reference;
     public override bool IsValid => Data != null;
     
     public string? Value

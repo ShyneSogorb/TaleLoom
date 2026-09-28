@@ -7,9 +7,16 @@
     
     <StackPanel Spacing="4">
         
-        <TextBlock Text="{Binding Field.Name}" />
+        <TextBlock Text="{Binding Field.Name, Mode=OneWay}" />
         
-        <TextBlock Text="{Binding Field.Type}" />
+        <Grid ColumnDefinitions="*,Auto">
+            
+            <TextBox Grid.Column="0" Text="{Binding Value, Mode=TwoWay}" />
+            <HyperlinkButton
+                Grid.Column="1"
+                NavigateUri="{Binding Value, Mode=OneWay}"
+                Content="Open link" />
+        </Grid>
         
     </StackPanel>
 </UserControl>

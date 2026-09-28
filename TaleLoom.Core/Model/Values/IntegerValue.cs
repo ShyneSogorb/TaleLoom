@@ -15,7 +15,7 @@ public sealed class IntegerValue : ValueBase
     }
     protected override object? ParseData(object? value)
     {
-        return value is null ? null : Convert.ToString(value);
+        return value is null ? null : Convert.ToInt32(value);
     }
     public override FieldType Type => FieldType.Integer;
     public override bool IsValid => Value != null;

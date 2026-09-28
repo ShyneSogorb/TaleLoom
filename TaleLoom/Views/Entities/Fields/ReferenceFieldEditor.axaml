@@ -1,15 +1,23 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:TaleLoom.ViewModels.Entities"
+             xmlns:vm="using:TaleLoom.ViewModels.Entities.Fields"
              x:Class="TaleLoom.Views.Entities.Fields.ReferenceFieldEditor"
-             x:DataType="vm:EntityFieldEditorViewModel"
+             x:DataType="vm:ReferenceFieldEditorViewModel"
 >
     
     <StackPanel Spacing="4">
         
-        <TextBlock Text="{Binding Field.Name}" />
-        
-        <TextBlock Text="{Binding Field.Type}" />
+        <TextBlock Text="{Binding Field.Name, Mode=OneWay}" />
+        <ComboBox 
+            ItemsSource="{Binding Options}"
+            SelectedItem="{Binding SelectedIdentifier}"
+            >
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         
     </StackPanel>
 </UserControl>

@@ -74,6 +74,16 @@ public sealed class FieldDefinition : IDatabaseEntity
     {
         IsActive = true;
     }
+    
+    public void MarkAsRequired()
+    {
+        IsRequired = true;
+    }
+    
+    public void MarkAsOptional()
+    {
+        IsRequired = true;
+    }
 
     public override int GetHashCode()
     {
@@ -85,6 +95,12 @@ public sealed class FieldDefinition : IDatabaseEntity
         Type = newType;
     }
 
+    public void SetDefaultValue(string? newValue)
+    {
+        DefaultValue = newValue;
+    }
+
+    
     public static FieldDefinition Load(FieldId id, Prefab owner, string name, int position, FieldType type, bool isRequired, bool isActive, string? defaultValue)
     {
         return new FieldDefinition(id, owner, name, position, type, isRequired, isActive, defaultValue);

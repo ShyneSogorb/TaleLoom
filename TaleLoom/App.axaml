@@ -6,6 +6,8 @@
              xmlns:prefabViews="using:TaleLoom.Views.Prefabs"
              xmlns:imageVm="using:TaleLoom.ViewModels.Images"
              xmlns:imageViews="using:TaleLoom.Views.Images"
+             xmlns:timelineVm="using:TaleLoom.ViewModels.Timeline"
+             xmlns:timelineViews="using:TaleLoom.Views.Timeline"
              xmlns:entityVm="using:TaleLoom.ViewModels.Entities"
              xmlns:entityViews="using:TaleLoom.Views.Entities"
              xmlns:entityFields="using:TaleLoom.Views.Entities.Fields"
@@ -37,6 +39,10 @@
         
         <DataTemplate DataType="{x:Type imageVm:ImageGalleryViewModel}">
             <imageViews:ImageGalleryView />
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type timelineVm:TimelineViewModel}">
+            <timelineViews:TimelineView />
         </DataTemplate>
         
     </Application.DataTemplates>

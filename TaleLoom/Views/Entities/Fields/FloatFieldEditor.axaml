@@ -7,11 +7,12 @@
     
     <StackPanel Spacing="4">
         
-        <TextBlock Text="{Binding Field.Name}" />
+        <TextBlock Text="{Binding Field.Name, Mode=OneWay}" />
         
         <NumericUpDown
-            Value="{Binding Value, Mode=TwoWay}"
-            ParsingNumberStyle="Any"
+            Value="{Binding ValueAsDouble, Mode=TwoWay}"
+            ParsingNumberStyle="Float"
+            FormatString="0.0"
         />
         
     </StackPanel>

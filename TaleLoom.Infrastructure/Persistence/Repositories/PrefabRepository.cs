@@ -5,16 +5,8 @@ using TaleLoom.Core.Model.Fields;
 
 namespace TaleLoom.Infrastructure.Persistence;
 
-public sealed class PrefabRepository
+public partial class TaleLoomRepository
 {
-    
-    private readonly SqliteDatabase _database;
-
-    public PrefabRepository(SqliteDatabase database)
-    {
-        _database = database;
-    }
-    
     public void Save(Prefab prefab)
     {
         using var connection = _database.CreateConnection();
@@ -145,7 +137,7 @@ public sealed class PrefabRepository
         command.CommandText =
             $"""
             UPDATE {FieldDefinition.Table}
-            SET name = @name, position = @position, type = @type, is_required = @is_required, is_active = @is_active
+            SET name = @name, position = @position, type = @type, is_required = @is_required, is_active = @is_active, default_value = @default_value
             WHERE id = @id
             """;
         command.Parameters.AddWithValue("@id", field.Id.ToString());
@@ -154,6 +146,12 @@ public sealed class PrefabRepository
         command.Parameters.AddWithValue("@type", field.Type);
         command.Parameters.AddWithValue("@is_required", field.IsRequired ? 1 : 0);
         command.Parameters.AddWithValue("@is_active", field.IsActive ? 1 : 0);
+
+        var defaultValue = command.CreateParameter();
+        defaultValue.ParameterName = "@default_value";
+        defaultValue.Value = (object?)field.DefaultValue ?? DBNull.Value;
+        defaultValue.IsNullable = true;
+        command.Parameters.Add(defaultValue);
         
         command.ExecuteNonQuery();
     }
@@ -211,7 +209,8 @@ public sealed class PrefabRepository
         command.ExecuteNonQuery();
     }
 
-    public List<Prefab> GetAllPrefabs()
+
+    public List<ObjectIdentifier> GetAllPrefabsSimple()
     {
         using var connection = _database.CreateConnection();
         connection.Open();
@@ -222,22 +221,28 @@ public sealed class PrefabRepository
 
         var reader = command.ExecuteReader();
 
-        var prefabs = new List<Prefab>();
+        var objs = new List<ObjectIdentifier>();
         while (reader.Read())
         {
-            var idString = reader.GetString(0);
-            string name = reader.GetString(1);
-
-            var id = new PrefabID(Guid.Parse(idString));
-            
-            prefabs.Add(Prefab.Load(id, name));
-            
+            objs.Add(
+                new ObjectIdentifier(
+                reader.GetString(0),
+                reader.GetString(1)
+                )
+            );
         }
 
-        return prefabs;
+        return objs;
     }
 
+    public List<Prefab> GetAllPrefabs()
+    {
+        return GetAllPrefabsSimple()
+            .Select(Prefab.Load)
+            .ToList();
+    }
 
+    
     private void LoadPrefabFields(Prefab prefab)
     {
         using var connection = _database.CreateConnection();

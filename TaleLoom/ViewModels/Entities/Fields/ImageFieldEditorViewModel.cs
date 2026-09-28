@@ -12,7 +12,7 @@ public class ImageFieldEditorViewModel : EntityFieldEditorViewModel
     public event Action? SelectImageRequested;
     
 
-    public ImageFieldEditorViewModel(Entity.FieldEntity fieldEntity) : base(fieldEntity)
+    public ImageFieldEditorViewModel(Entity.FieldEntity fieldEntity, bool isPrefabEditor) : base(fieldEntity, isPrefabEditor)
     {
         SelectImageCommand = new RelayCommand(
             _ => SelectImageRequested?.Invoke());

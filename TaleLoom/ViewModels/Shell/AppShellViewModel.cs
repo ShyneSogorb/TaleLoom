@@ -6,14 +6,14 @@ using TaleLoom.ViewModels.Entities;
 using TaleLoom.ViewModels.Home;
 using TaleLoom.ViewModels.Images;
 using TaleLoom.ViewModels.Prefabs;
+using TaleLoom.ViewModels.Timeline;
 
 namespace TaleLoom.ViewModels.Shell;
 
 public class AppShellViewModel : ViewModelBase
 {
     private readonly INavigationService _navigationService;
-    private readonly PrefabRepository _prefabRepository;
-    private readonly EntityRepository _entityRepository;
+    private readonly TaleLoomRepository _taleLoomRepository;
     private readonly ImageLibrary _imageLibrary;
 
     public INavigationService Navigation => _navigationService;
@@ -23,15 +23,15 @@ public class AppShellViewModel : ViewModelBase
     
     public ICommand NavigateEntityCommand { get; }
     public ICommand NavigateGalleryCommand { get; }
+    public ICommand NavigateTimelineCommand { get; }
+    
     
     public AppShellViewModel(
         INavigationService navigationService,
-        PrefabRepository prefabRepository,
-        EntityRepository entityRepository)
+        TaleLoomRepository taleLoomRepository)
     {
         _navigationService = navigationService;
-        _prefabRepository = prefabRepository;
-        _entityRepository = entityRepository;
+        _taleLoomRepository = taleLoomRepository;
 
         _imageLibrary = new ImageLibrary();
 
@@ -43,18 +43,22 @@ public class AppShellViewModel : ViewModelBase
             _ => _navigationService.Navigate(
                 new PrefabListViewModel(
                     _navigationService,
-                    _prefabRepository)));
+                    _taleLoomRepository)));
         
         NavigateEntityCommand = new RelayCommand(
             _ => _navigationService.Navigate(
                 new EntitiesListViewModel(
                     _navigationService,
-                    _entityRepository,
-                    _prefabRepository)));
+                    _taleLoomRepository)));
 
         NavigateGalleryCommand = new RelayCommand(
             _ => _navigationService.Navigate(
                 new ImageGalleryViewModel(_imageLibrary))
+        );
+
+        NavigateTimelineCommand = new RelayCommand(
+            _ => _navigationService.Navigate(
+                new TimelineViewModel())
         );
 
     }

@@ -4,7 +4,9 @@
              x:Class="TaleLoom.Views.Entities.EntityEditorView"
              x:DataType="vm:EntityEditorViewModel">
     
-    <Grid RowDefinitions="Auto, Auto, *, Auto, Auto">
+    <Grid 
+        RowDefinitions="Auto, Auto, *, Auto, Auto"
+        Margin="20, 10">
         
         <!-- Current location -->
         
@@ -16,12 +18,18 @@
         
         <!-- Prefab fields -->
         
+        <ScrollViewer
+            Grid.Row="2"
+            Margin="0, 10">
+            
         <ItemsControl 
-            Grid.Row="2" 
             ItemsSource="{Binding Fields}" 
-            ItemTemplate="{StaticResource EntityFieldTemplateSelector}">
+            ItemTemplate="{StaticResource EntityFieldTemplateSelector}"
+            Margin="25, 5">
 
         </ItemsControl>
+            
+        </ScrollViewer> 
         
         <!-- Save -->
         

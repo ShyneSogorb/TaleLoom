@@ -1,0 +1,154 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TaleLoom.ViewModels.Timeline"
+             x:Class="TaleLoom.Views.Timeline.TimelineView"
+             x:DataType="vm:TimelineViewModel">
+    
+    <Grid>
+        
+        <Canvas Margin="20">
+            
+            <!-- Timeline -->
+            <Line
+                StartPoint="0,100"
+                EndPoint="1000,100"
+                Stroke="White"
+                StrokeThickness="2"/>
+
+            <!-- 1400 -->
+            <Line
+                StartPoint="0,90"
+                EndPoint="0,110"
+                Stroke="White"
+                StrokeThickness="2" />
+
+            <TextBlock
+                Canvas.Left="-15"
+                Canvas.Top="115"
+                Text="1400" />
+
+            <!-- 1410 -->
+            <Line
+                StartPoint="100,90"
+                EndPoint="100,110"
+                Stroke="White"
+                StrokeThickness="2" />
+
+            <TextBlock
+                Canvas.Left="85"
+                Canvas.Top="115"
+                Text="1410" />
+
+            <!-- 1420 -->
+            <Line
+                StartPoint="200,90"
+                EndPoint="200,110"
+                Stroke="White"
+                StrokeThickness="2" />
+
+            <TextBlock
+                Canvas.Left="185"
+                Canvas.Top="115"
+                Text="1420" />
+
+            <!-- 1430 -->
+            <Line
+                StartPoint="300,90"
+                EndPoint="300,110"
+                Stroke="White"
+                StrokeThickness="2" />
+
+            <TextBlock
+                Canvas.Left="285"
+                Canvas.Top="115"
+                Text="1430" />
+
+            <!-- 1440 -->
+            <Line
+                StartPoint="400,90"
+                EndPoint="400,110"
+                Stroke="White"
+                StrokeThickness="2" />
+
+            <TextBlock
+                Canvas.Left="385"
+                Canvas.Top="115"
+                Text="1440" />
+
+            <!-- 1450 -->
+            <Line
+                StartPoint="500,90"
+                EndPoint="500,110"
+                Stroke="White"
+                StrokeThickness="2" />
+
+            <TextBlock
+                Canvas.Left="485"
+                Canvas.Top="115"
+                Text="1450" />
+
+            <!-- 1460 -->
+            <Line
+                StartPoint="600,90"
+                EndPoint="600,110"
+                Stroke="White"
+                StrokeThickness="2" />
+
+            <TextBlock
+                Canvas.Left="585"
+                Canvas.Top="115"
+                Text="1460" />
+
+            <!-- 1470 -->
+            <Line
+                StartPoint="700,90"
+                EndPoint="700,110"
+                Stroke="White"
+                StrokeThickness="2" />
+
+            <TextBlock
+                Canvas.Left="685"
+                Canvas.Top="115"
+                Text="1470" />
+
+            <!-- 1480 -->
+            <Line
+                StartPoint="800,90"
+                EndPoint="800,110"
+                Stroke="White"
+                StrokeThickness="2" />
+
+            <TextBlock
+                Canvas.Left="785"
+                Canvas.Top="115"
+                Text="1480" />
+
+            <!-- 1490 -->
+            <Line
+                StartPoint="900,90"
+                EndPoint="900,110"
+                Stroke="White"
+                StrokeThickness="2" />
+
+            <TextBlock
+                Canvas.Left="885"
+                Canvas.Top="115"
+                Text="1490" />
+
+            <!-- 1500 -->
+            <Line
+                StartPoint="1000,90"
+                EndPoint="1000,110"
+                Stroke="White"
+                StrokeThickness="2" />
+
+            <TextBlock
+                Canvas.Left="985"
+                Canvas.Top="115"
+                Text="1500" />
+            
+        </Canvas>
+        
+    </Grid>
+    
+</UserControl>

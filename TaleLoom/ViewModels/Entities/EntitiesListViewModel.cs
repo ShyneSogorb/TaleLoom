@@ -31,8 +31,7 @@ public class PrefabCategoryContainer
 public class EntitiesListViewModel : ViewModelBase
 {
     private readonly INavigationService _navigationService;
-    private readonly EntityRepository _entityRepository;
-    private readonly PrefabRepository _prefabRepository;
+    private readonly TaleLoomRepository _taleLoomRepository;
     public ObservableCollection<PrefabCategoryContainer> Entities { get; }
     
     public ICommand EditEntityCommand { get; }
@@ -40,20 +39,18 @@ public class EntitiesListViewModel : ViewModelBase
     
     public EntitiesListViewModel(
         INavigationService navigationService,
-        EntityRepository entityRepository,
-        PrefabRepository prefabRepository)
+        TaleLoomRepository taleLoomRepository)
     {
         _navigationService = navigationService;
-        _entityRepository = entityRepository;
-        _prefabRepository = prefabRepository;
+        _taleLoomRepository = taleLoomRepository;
         
         Entities = new ObservableCollection<PrefabCategoryContainer>(
-            _prefabRepository.GetAllPrefabs()
+            _taleLoomRepository.GetAllPrefabs()
             .Select(
                 prefab => new PrefabCategoryContainer(
                     prefab.Id,
                     prefab.Name,
-                    _entityRepository.GetAllEntities(prefab)
+                    _taleLoomRepository.GetAllEntities(prefab)
                     .Select(entity => new EntitiesListItemViewModel(entity.Id, entity.Name, prefab.Id))
                 )
             )
@@ -67,11 +64,11 @@ public class EntitiesListViewModel : ViewModelBase
     {
         if (param is not EntitiesListItemViewModel entityItem) return;
 
-        var prefab = _prefabRepository.GetPrefabById(entityItem.ParentID);
-        var entity = _entityRepository.GetEntityById(prefab, entityItem.ID);
+        var prefab = _taleLoomRepository.GetPrefabById(entityItem.ParentID);
+        var entity = _taleLoomRepository.GetEntityById(prefab, entityItem.ID);
         
         _navigationService.Navigate(
-            new EntityEditorViewModel(prefab, entity, _entityRepository)
+            new EntityEditorViewModel(prefab, entity, _taleLoomRepository)
             );
         
     }
@@ -80,10 +77,10 @@ public class EntitiesListViewModel : ViewModelBase
     {
         if (param is not PrefabCategoryContainer prefabCategoryContainer) return;
 
-        var prefab = _prefabRepository.GetPrefabById(prefabCategoryContainer.PrefabId);
+        var prefab = _taleLoomRepository.GetPrefabById(prefabCategoryContainer.PrefabId);
         
         _navigationService.Navigate(
-            new EntityEditorViewModel(prefab, Entity.Instantiate(prefab), _entityRepository)
+            new EntityEditorViewModel(prefab, Entity.Instantiate(prefab), _taleLoomRepository)
         );
 
     }

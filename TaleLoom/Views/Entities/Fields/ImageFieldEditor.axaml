@@ -7,7 +7,7 @@
     
     <StackPanel Spacing="4">
         
-        <TextBlock Text="{Binding Field.Name}" />
+        <TextBlock Text="{Binding Field.Name, Mode=OneWay}" />
         
         <Button
             Content="Select Image"
@@ -15,11 +15,13 @@
             HorizontalAlignment="Left"
             Margin="10" />
         
-        <Image
-            Source="{Binding  ValueAsImage}" 
-            Width="200"
-            Height="200"
-            Stretch="UniformToFill"/>
+        <Button>
+            <Image
+                Source="{Binding  ValueAsImage}" 
+                MaxHeight="200"
+                Stretch="Uniform"
+            />
+        </Button>
         
         <TextBlock Text="{Binding Field.Type}" />
         

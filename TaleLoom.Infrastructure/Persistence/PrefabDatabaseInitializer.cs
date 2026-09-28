@@ -30,7 +30,7 @@ public sealed class PrefabDatabaseInitializer
     
     public List<Prefab> Populate()
     {
-        PrefabRepository repo = new PrefabRepository(_database);
+        var repo = new TaleLoomRepository(_database);
 
         List<Prefab> prefabs = new List<Prefab>();
         

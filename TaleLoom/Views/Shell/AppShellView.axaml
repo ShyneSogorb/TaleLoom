@@ -23,6 +23,7 @@
             <Button Content="Prefabs" Command="{Binding NavigatePrefabsCommand}"/>
             <Button Content="Entities" Command="{Binding NavigateEntityCommand}"/>
             <Button Content="Gallery" Command="{Binding NavigateGalleryCommand}"/>
+            <Button Content="Timeline" Command="{Binding NavigateTimelineCommand}"/>
             
         </StackPanel>
         

@@ -46,58 +46,79 @@
                 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate
-                            x:DataType="vm:FieldDefinitionViewModel">
+                            x:DataType="vm:PrefabFieldDefinitionViewModel">
                             
-                            <Grid
-                                ColumnDefinitions="Auto,*,150,Auto,Auto"
-                                Margin="0,0,0,8">
-                                
-                                <!-- Delete -->
-                                
-                                <CheckBox
-                                    Grid.Column="0"
-                                    IsChecked="{Binding IsActive, Mode=TwoWay}"
-                                    Content="Active"
-                                    Margin="0,0,5,0"
+                            <Grid RowDefinitions="Auto, Auto"
+                                Margin="0,0,10,8">
+                                <Grid 
+                                    Grid.Row="0"
+                                    ColumnDefinitions="Auto,*,150,Auto,Auto, Auto"
+                                    Margin="0,0,0,5"
+                                    >
+                                    
+                                    <!-- Delete -->
+                                    
+                                    <CheckBox
+                                        Grid.Column="0"
+                                        IsChecked="{Binding IsActive, Mode=TwoWay}"
+                                        Content="Active"
+                                        Margin="0,0,5,0"
+                                        />
+                                    
+                                    <!-- Name -->
+                                    
+                                    <TextBox 
+                                        Grid.Column="1"
+                                        Text="{Binding Name, Mode=TwoWay}"
+                                        IsEnabled="{Binding IsActive}"
+                                        Margin="0,0,10,0" />
+                                    
+                                    <!-- Type -->
+                                    
+                                    <ComboBox
+                                        Grid.Column="2"
+                                        ItemsSource="{Binding AvailableTypes}"
+                                        SelectedItem="{Binding Type}"
+                                        Margin="0,0,10,0" />
+                                    
+                                    <!-- Move Up -->
+                                    
+                                    <Button
+                                        Grid.Column="3"
+                                        Content="↑"
+                                        Margin="0,0,5,0"
+                                        Command="{Binding $parent[UserControl].DataContext.MoveFieldUpCommand}"
+                                        CommandParameter="{Binding}" />
+                                    
+                                    <!-- Move Down -->
+                                    
+                                    <Button
+                                        Grid.Column="4"
+                                        Content="↓"
+                                        Margin="0,0,5,0"
+                                        Command="{Binding $parent[UserControl].DataContext.MoveFieldDownCommand}"
+                                        CommandParameter="{Binding}" />
+                                    
+                                    <!-- Required -->
+                                    
+                                    <CheckBox
+                                        Grid.Column="5"
+                                        IsChecked="{Binding IsRequired, Mode=TwoWay}"
+                                        Content="Required"
+                                        Margin="0,0,5,0"
                                     />
-                                
-                                <!-- Name -->
-                                
-                                <TextBox 
-                                    Grid.Column="1"
-                                    Text="{Binding Name, Mode=TwoWay}"
-                                    IsEnabled="{Binding IsActive}"
-                                    Margin="0,0,10,0" />
-                                
-                                <!-- Type -->
-                                
-                                <ComboBox
-                                    Grid.Column="2"
-                                    ItemsSource="{Binding AvailableTypes}"
-                                    SelectedItem="{Binding Type}"
-                                    Margin="0,0,10,0" />
-                                
-                                <!-- Move Up -->
-                                
-                                <Button
-                                    Grid.Column="3"
-                                    Content="↑"
-                                    Margin="0,0,5,0"
-                                    Command="{Binding $parent[UserControl].DataContext.MoveFieldUpCommand}"
-                                    CommandParameter="{Binding}" />
-                                
-                                <!-- Move Down -->
-                                
-                                <Button
-                                    Grid.Column="4"
-                                    Content="↓"
-                                    Margin="0,0,5,0"
-                                    Command="{Binding $parent[UserControl].DataContext.MoveFieldDownCommand}"
-                                    CommandParameter="{Binding}" />
-                                
+                                    
+                                </Grid>
+                                <Grid Row="1">
+                                    
+                                <ItemsControl 
+                                    ItemsSource="{Binding DefaultValue}" 
+                                    ItemTemplate="{StaticResource EntityFieldTemplateSelector}">
+
+                                </ItemsControl>
+                                </Grid>
                                 
                             </Grid>
-                            
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     

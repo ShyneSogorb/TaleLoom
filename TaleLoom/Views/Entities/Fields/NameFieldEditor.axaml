@@ -7,7 +7,7 @@
     
     <StackPanel Spacing="4">
         
-        <TextBlock Text="{Binding Field.Name}" />
+        <TextBlock Text="{Binding Field.Name, Mode=OneWay}" />
         
         <TextBox Text="{Binding Value, Mode=TwoWay}"/>
         

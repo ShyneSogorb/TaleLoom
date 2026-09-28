@@ -11,25 +11,26 @@ namespace TaleLoom.ViewModels.Entities;
 
 public class EntityFieldEditorViewModel : ViewModelBase
 {
-    private Entity.FieldEntity _fieldEntity;
+    protected Entity.FieldEntity FieldEntity;
+    protected bool IsPrefabEditor;
 
     public FieldDefinition Field
     {
-        get => _fieldEntity.Definition;
+        get => FieldEntity.Definition;
     }
 
     public ValueBase ValueContainer
     {
-        get => _fieldEntity.Value;
+        get => FieldEntity.Value;
     }
     
     public object? Value
     {
-        get => _fieldEntity.Value.GetData();
+        get => FieldEntity.Value.GetData();
         set
         {
-            if (_fieldEntity.Value.GetData() == value) return;
-            _fieldEntity.Value.SetData(value);
+            if (FieldEntity.Value.GetData() == value) return;
+            FieldEntity.Value.SetData(value);
             OnPropertyChanged();
         }
     }
@@ -38,20 +39,20 @@ public class EntityFieldEditorViewModel : ViewModelBase
     {
         get
         {
-            if (_fieldEntity.Value.TryGet(out double value))
+            if (FieldEntity.Value.TryGet(out double value))
             {
                 return value;
             }
             return null;
         }
-        set => _fieldEntity.Value.SetData(value);
+        set => FieldEntity.Value.SetData(value);
     }
 
     public Bitmap? ValueAsImage
     {
         get
         {
-            if (_fieldEntity.Value.TryGet(out string value))
+            if (FieldEntity.Value.TryGet(out string value))
             {
                 return new Bitmap(value);
             }
@@ -61,13 +62,14 @@ public class EntityFieldEditorViewModel : ViewModelBase
 
     public void SetValueAsImage(string value)
     {
-        if (_fieldEntity.Value.IsValid && _fieldEntity.Value.Get<string>() == value) return;
-        _fieldEntity.Value.SetData(value);
+        if (FieldEntity.Value.IsValid && FieldEntity.Value.Get<string>() == value) return;
+        FieldEntity.Value.SetData(value);
         OnPropertyChanged(nameof(ValueAsImage));
     }
 
-    public EntityFieldEditorViewModel(Entity.FieldEntity fieldEntity)
+    public EntityFieldEditorViewModel(Entity.FieldEntity fieldEntity, bool isPrefabEditor)
     {
-        _fieldEntity = fieldEntity;
+        FieldEntity = fieldEntity;
+        IsPrefabEditor = isPrefabEditor;
     }
 }

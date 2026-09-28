@@ -16,7 +16,7 @@ public class EntityEditorViewModel : ViewModelBase
 
     private readonly Entity _entity;
 
-    private readonly EntityRepository _entityRepository;
+    private readonly TaleLoomRepository _taleLoomRepository;
 
     public IReadOnlyList<EntityFieldEditorViewModel> Fields { get; }
     
@@ -33,22 +33,23 @@ public class EntityEditorViewModel : ViewModelBase
         }
     }
 
-    public EntityEditorViewModel(Prefab prefab, Entity entity, EntityRepository entityRepository)
+    public EntityEditorViewModel(Prefab prefab, Entity entity, TaleLoomRepository taleLoomRepository)
     {
         _prefab = prefab;
         _entity = entity;
-        _entityRepository = entityRepository;
+        _taleLoomRepository = taleLoomRepository;
 
         Fields = entity.FieldsData
-            .Select(EntityFieldEdVmFactory.Create)
+            .Select(f => EntityFieldEdVmFactory.Create(f, taleLoomRepository, false))
             .ToList();
 
         SaveEntityCommand = new RelayCommand(_ => SaveEntity());
+        
     }
 
     private void SaveEntity()
     {
-        _entityRepository.SaveEntity(_entity);
+        _taleLoomRepository.SaveEntity(_entity);
     }
     
 }

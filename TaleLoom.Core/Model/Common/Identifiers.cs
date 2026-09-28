@@ -21,3 +21,9 @@ public readonly record struct EntityId(Guid Value)
     public string ToSqlString() => $"'{ToString()}'";
     public string ToSqlField() => $"\"{ToString()}\"";
 }
+
+public sealed class ObjectIdentifier(string id, string name)
+{
+    public string Id { get; set; } = id;
+    public string Name { get; set; } = name;
+}

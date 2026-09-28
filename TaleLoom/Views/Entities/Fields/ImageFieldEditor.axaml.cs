@@ -82,7 +82,6 @@ public partial class ImageFieldEditor : UserControl
             {
                 File.Copy(path, destination, overwrite:false);
             }
-
             
             _viewModel.SetValueAsImage(destination);
 
