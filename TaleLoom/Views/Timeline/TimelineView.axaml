@@ -12,14 +12,14 @@
             <Line
                 StartPoint="0,100"
                 EndPoint="1000,100"
-                Stroke="White"
+                Stroke="Black"
                 StrokeThickness="2"/>
 
             <!-- 1400 -->
             <Line
                 StartPoint="0,90"
                 EndPoint="0,110"
-                Stroke="White"
+                Stroke="Black"
                 StrokeThickness="2" />
 
             <TextBlock
@@ -31,7 +31,7 @@
             <Line
                 StartPoint="100,90"
                 EndPoint="100,110"
-                Stroke="White"
+                Stroke="Black"
                 StrokeThickness="2" />
 
             <TextBlock
@@ -43,7 +43,7 @@
             <Line
                 StartPoint="200,90"
                 EndPoint="200,110"
-                Stroke="White"
+                Stroke="Black"
                 StrokeThickness="2" />
 
             <TextBlock
@@ -55,7 +55,7 @@
             <Line
                 StartPoint="300,90"
                 EndPoint="300,110"
-                Stroke="White"
+                Stroke="Black"
                 StrokeThickness="2" />
 
             <TextBlock
@@ -67,7 +67,7 @@
             <Line
                 StartPoint="400,90"
                 EndPoint="400,110"
-                Stroke="White"
+                Stroke="Black"
                 StrokeThickness="2" />
 
             <TextBlock
@@ -79,7 +79,7 @@
             <Line
                 StartPoint="500,90"
                 EndPoint="500,110"
-                Stroke="White"
+                Stroke="Black"
                 StrokeThickness="2" />
 
             <TextBlock
@@ -91,7 +91,7 @@
             <Line
                 StartPoint="600,90"
                 EndPoint="600,110"
-                Stroke="White"
+                Stroke="Black"
                 StrokeThickness="2" />
 
             <TextBlock
@@ -103,7 +103,7 @@
             <Line
                 StartPoint="700,90"
                 EndPoint="700,110"
-                Stroke="White"
+                Stroke="Black"
                 StrokeThickness="2" />
 
             <TextBlock
@@ -115,7 +115,7 @@
             <Line
                 StartPoint="800,90"
                 EndPoint="800,110"
-                Stroke="White"
+                Stroke="Black"
                 StrokeThickness="2" />
 
             <TextBlock
@@ -127,7 +127,7 @@
             <Line
                 StartPoint="900,90"
                 EndPoint="900,110"
-                Stroke="White"
+                Stroke="Black"
                 StrokeThickness="2" />
 
             <TextBlock
@@ -139,7 +139,7 @@
             <Line
                 StartPoint="1000,90"
                 EndPoint="1000,110"
-                Stroke="White"
+                Stroke="Black"
                 StrokeThickness="2" />
 
             <TextBlock

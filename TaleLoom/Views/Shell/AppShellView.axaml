@@ -15,6 +15,19 @@
             Margin="20"
             Spacing="10">
             
+            <Grid ColumnDefinitions="Auto,Auto">
+                <Button
+                    Grid.Column="0" 
+                    Content="&lt;" 
+                    Command="{Binding NavigateToPreviousCommand}" 
+                    IsEnabled="{Binding CanGoBack, Mode=TwoWay}"/>
+                <Button
+                    Grid.Column="1" 
+                    Content="&gt;"
+                    Command="{Binding NavigateToNextCommand}" 
+                    IsEnabled="{Binding CanGoForward, Mode=TwoWay}"/>
+            </Grid>
+            
             <TextBlock
                 Text="TaleLoom"
                 FontSize="28" />
@@ -32,8 +45,6 @@
         <ContentControl
             Grid.Column="1"
             Content="{Binding Navigation.CurrentView}" />
-        
-        
         
     </Grid>
     
