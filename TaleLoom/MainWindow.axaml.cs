@@ -8,6 +8,7 @@ using TaleLoom.Services;
 
 using TaleLoom.ViewModels.Home;
 using TaleLoom.ViewModels.Shell;
+using TaleLoom.ViewModels.Timeline;
 using TaleLoom.Views.Timeline;
 
 namespace TaleLoom;
@@ -22,7 +23,7 @@ public partial class MainWindow : Window
 
         var navigationService = new NavigationService();
         //navigationService.Navigate(new HomeViewModel());
-        navigationService.Navigate(new TimelineView());
+        navigationService.Navigate(new TimelineViewModel());
 
         var sqliteDatabase = new SqliteDatabase("TaleLoom.db");
         var repository = new TaleLoomRepository(sqliteDatabase);
@@ -33,7 +34,6 @@ public partial class MainWindow : Window
         var entityInitializer = new EntityDatabaseInitializer(sqliteDatabase);
         
         entityInitializer.Initialize(prefabs[0]);
-        //entityInitializer.Populate(new Entity(prefabs[0], "Ythia"));
 
         Console.Write("Tale loom location is " + TaleLoomDataDirectory.Root);
         

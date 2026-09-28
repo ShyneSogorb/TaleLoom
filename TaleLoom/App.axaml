@@ -12,7 +12,7 @@
              xmlns:entityViews="using:TaleLoom.Views.Entities"
              xmlns:entityFields="using:TaleLoom.Views.Entities.Fields"
              x:Class="TaleLoom.App"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Light">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
@@ -86,7 +86,6 @@
             UrlTemplate="{StaticResource UrlFieldTemplate}" 
             ReferenceTemplate="{StaticResource ReferenceFieldTemplate}" 
             />
-        
         
     </Application.Resources>
              
