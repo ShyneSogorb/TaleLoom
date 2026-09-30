@@ -16,7 +16,7 @@ public class TimelineCanvas : Control
     private const double MaxPixelsPerDay = 100.0;
     private readonly record struct TickInterval(int Years);
     private const double TargetTickSpacing = 100.0;
-    private static readonly DateTime OriginDate = new(1, 1, 1);
+    private static readonly TimelineDate OriginDate = new(1100, 1, 1);
 
     private TickInterval CalculateTickInterval()
     {

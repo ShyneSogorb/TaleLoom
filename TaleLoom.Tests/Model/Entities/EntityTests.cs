@@ -230,4 +230,5 @@ public class EntityTests
     {
         return new Entity(prefab, "foo");
     }
+
 }
