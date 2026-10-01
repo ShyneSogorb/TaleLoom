@@ -34,15 +34,29 @@ public class TimelineDate
     public int GetYear()
     {
         int years = 0;
-        for (UInt128 i = 0; i < GetAbsDays(); i+=365*4)
+        
+        for (UInt128 i = 0; i < GetAbsDays(); i+= DaysInYear())
         {
-            years += 4;
+            years ++;
             
             if (IsLeapYear(years))
                 ++i;
         }
+        
+        if (Tick < 0)
+            return -years-1;
+        else
+            return years+1;
+    }
 
-        return years;
+    public static uint DaysInYear(bool leap = false)
+    {
+        return (uint)(365 + (leap ? 1 : 0));
+    }
+    
+    public static uint DaysInYears(uint years)
+    {
+        return DaysInYear() * years;
     }
 
     public static bool IsLeapYear(int year)
