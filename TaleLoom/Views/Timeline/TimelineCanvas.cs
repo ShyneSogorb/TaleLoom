@@ -2,7 +2,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Controls.Presenters;
 using TaleLoom.ViewModels.Timeline;
 using Avalonia.Media;
 
@@ -39,19 +38,19 @@ public class TimelineCanvas : Control
         return new TickInterval(intervalYears);
     }
 
-    private DateTime FindFirstVisibleTick(TickInterval interval)
+    private TimelineDate FindFirstVisibleTick(TickInterval interval)
     {
         var days =
             -OffsetX / PixelsPerDay;
 
         var firstDate =
-            OriginDate.AddDays(days);
+            OriginDate.AddDays((Int128)days);
 
         var intervalYears =
             interval.Years;
 
         var year =
-            firstDate.Year;
+            firstDate.GetYear();
 
         var remainder =
             year % intervalYears;
@@ -59,22 +58,22 @@ public class TimelineCanvas : Control
         if (remainder != 0)
             year += intervalYears - remainder;
 
-        return new DateTime(
+        return new TimelineDate(
             year,
             1,
             1);
     }
 
-    private bool IsVisible(DateTime date)
+    private bool IsVisible(TimelineDate date)
     {
-        var days = (date - OriginDate).TotalDays;
+        var days = (double)(date - OriginDate).GetDays();
 
         var x = days * PixelsPerDay + OffsetX;
 
         return x <= Bounds.Width;
     }
 
-    private static DateTime AddInterval(DateTime date, TickInterval interval)
+    private static TimelineDate AddInterval(TimelineDate date, TickInterval interval)
     {
         return date.AddYears(interval.Years);
     }
@@ -118,10 +117,10 @@ public class TimelineCanvas : Control
     }
 
 
-    // public static readonly StyledProperty<DateTime> StartDateProperty =
-    //     AvaloniaProperty.Register<TimelineCanvas, DateTime>(nameof(StartDate));
+    // public static readonly StyledProperty<TimelineDate> StartDateProperty =
+    //     AvaloniaProperty.Register<TimelineCanvas, TimelineDate>(nameof(StartDate));
     //
-    // public DateTime StartDate
+    // public TimelineDate StartDate
     // {
     //     get => GetValue(StartDateProperty);
     //     set => SetValue(StartDateProperty, value);
@@ -150,9 +149,9 @@ public class TimelineCanvas : Control
         return availableSize;
     }
 
-    private void DrawTick(DrawingContext context, DateTime date, TickInterval interval)
+    private void DrawTick(DrawingContext context, TimelineDate date, TickInterval interval)
     {
-        var days = (date - OriginDate).TotalDays;
+        var days = (double)(date - OriginDate).GetDays();
         var x = days * PixelsPerDay + OffsetX;
 
         const double axisY = 50.0;
@@ -169,7 +168,7 @@ public class TimelineCanvas : Control
             
         //Label
         var text = new FormattedText(
-            date.Year.ToString(),
+            date.GetYear().ToString(),
             System.Globalization.CultureInfo.InvariantCulture,
             FlowDirection.LeftToRight,
             new Typeface("Inter"),
